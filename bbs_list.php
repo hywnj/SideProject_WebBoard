@@ -1,4 +1,10 @@
-<?php include  $_SERVER['DOCUMENT_ROOT']."/db.php"; ?>
+<?php  
+    include_once "C:/sideProject/Board/common/db.php"; 
+    include_once "C:/sideProject/Board/common/common.php"; 
+    $_SESSION['USER_ID'] = 'ju04';
+    print_r($_SESSION);
+?>
+
 <!doctype html>
 <head>
 <meta charset="UTF-8">
@@ -34,13 +40,17 @@
             </tr>
         </thead>
         <?php
-            
+            //비회원 - 버튼 숨기기
+            if(empty($_SESSION['USER_ID'])){
+                echo '<style>#reg_btn{display:none !important;}</style>';
+            }
+
             if($_GET){
                 $catagory = $_GET['catgo'];
                 $search_con = $_GET['search'];
-                $sql = mysqli_query($db,"select * from tbl_bbs where $catagory like '%$search_con%' order by no desc"); 
+                $sql = mysqli_query($db,"select no,title,reg_id,DATE_FORMAT(reg_date, '%Y-%m-%d') as reg_date, email from tbl_bbs where $catagory like '%$search_con%' order by no desc"); 
             }else{
-                $sql = mysqli_query($db,"select no,title,reg_id,DATE_FORMAT(reg_date, '%Y-%m-%d') as reg_date, email from tbl_bbs order by no desc limit 0,5"); 
+                $sql = mysqli_query($db,"select no,title,reg_id,DATE_FORMAT(reg_date, '%Y-%m-%d') as reg_date, email from tbl_bbs order by no desc"); 
             }
             
             while($tbl_bbs = mysqli_fetch_array($sql)){
@@ -55,7 +65,7 @@
         ?>
     </table>
     <div id="write_btn">
-      <a href="/bbs_reg.php"><button style="width: 80px; height: 30px;">등록하기</button></a>
+      <a href="/bbs_reg2.php"><button id="reg_btn" style="width: 80px; height: 30px;">등록하기</button></a>
     </div>
   </div>
 </body>
