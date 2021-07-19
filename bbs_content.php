@@ -7,7 +7,6 @@
     <meta charset="UTF-8">
     <title>게시판</title>
     <link rel="stylesheet" type="text/css" href="/css/read_style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
 	<?php
@@ -33,20 +32,38 @@
             echo '<style>#mod_btn, #del_btn{display:none !important;}</style>';
         }  
 	?>
+    <!--Delete-->
+    <script>
+        function delCheck(){
+
+            var delConfrim = confirm("정말 삭제하시겠습니까?");
+
+            if(delConfrim){
+                //Form 전송
+                document.write(
+                    '<form id="frmDel" action="/bbs_save.php?no=<?=$bno;?>" method="post"><input type="hidden" name="action_flag" value="D"></form>'
+                );
+                document.getElementById("frmDel").submit();
+            }
+            else{
+                return false;
+            }
+        }
+    </script>
+
     <!-- 글 불러오기 -->
     <div id="board_read">
     <h1>게시글 상세페이지</h1>
         <table class="list-table">
             <thead>
                 <th style="width: 200px;"><b>제목</b></th>
-                <th colspan="3" style="width: 300px;"><?php echo $tbl_bbs['title'] ?></th>
+                <th colspan="3" style="width: 300px;"><?=$tbl_bbs['title'] ?></th>
             </thead>
             <tbody>
                 <tr>
                     <td><b>등록아이디</b></td>
-                    <td><?php echo $tbl_bbs['reg_id']; ?></td>
+                    <td><?=$tbl_bbs['reg_id']; ?></td>
                     <td><b>등록일자</b></td>
-                    
                     <?php echo '<td>'.date("Y-m-d",strtotime($tbl_bbs['reg_date'])).'</td>'?>
                 </tr>
             </tbody>
@@ -57,7 +74,8 @@
         <!-- 목록, 수정, 삭제 -->
         <div id="bo_ser" >
             <a href="/bbs_list.php"><button style="width: 50px; height: 30px;">목록</button></a>
-            <a href="/bbs_modify.php?no=<?php echo $tbl_bbs['no']; ?>"><button id ="mod_btn" style="width: 50px; height: 30px">수정</button></a>
+            <a href="/bbs_modify.php?no=<?=$tbl_bbs['no']; ?>"><button id ="mod_btn" style="width: 50px; height: 30px">수정</button></a>
+            <button type="button" onClick="delCheck();" id ="del_btn" style="width: 50px; height: 30px; background:dimgrey;" >삭제</button>
         </div>
     </div>
 </body>

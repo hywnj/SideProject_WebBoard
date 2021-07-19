@@ -23,26 +23,20 @@
     <meta charset="UTF-8">
     <title>게시판</title>
     <link rel="stylesheet" type="text/css" href="/css/read_style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <script>
         function fnCheck() {
             
             var title = frmReg.title.value;
-            var reg_id =  "<?=$_SESSION['USER_ID']?>" ;
-            //frmReg.reg_id.value;
             var email = frmReg.email.value;
             
-            //필수 입력값 check
-            if(title == ""||reg_id == ""){
-                if(title == ""){
-                    alert("제목을 입력해주세요!");
-                    return false;
-                }else if(reg_id == ""){
-                    alert("등록 아이디를 입력해주세요!");
-                    return false;
-                }
+            //필수 입력값 - title check
+            if(title == ""){
+                alert("제목을 입력해주세요!");
+                return false;
             }
 
+            //email form check
             if(email.trim()){
                 var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
                 if(!regExp.test(email)) {
@@ -60,7 +54,7 @@
     <div id="board_read">
     <h1>게시글 상세페이지</h1>
         <form action="/bbs_save.php" name="frmReg" method="post">
-            <input type= "hidden" name="action_flag" value="r">
+            <input type= "hidden" name="action_flag" value="R">
             <table class="list-table">
                 <thead>
                     <th style="width: 200px;"><b>제목</b></th>
@@ -71,7 +65,7 @@
                     <tr>
                         <td><b>등록아이디</b></td>
                         <td>
-                        <input name="reg_id" id="ureg_id" value = <?=$_SESSION['USER_ID'] ?> >
+                        <input name="reg_id" id="ureg_id" value = <?=$_SESSION['USER_ID'] ?> readonly>
                         </td>
                         <td><b>이메일</b></td>
                         <td>
@@ -84,10 +78,9 @@
                 <textarea name="content" id="ucontent" rows="20" cols="124" placeholder="내용을 입력해주세요."></textarea>
             </div>
         </form>
-        <!-- 목록, 수정, 삭제 -->
         <div id="bo_ser" >
             <a href="/bbs_list.php"><button style="width: 50px; height: 30px;">목록</button></a>
-            <button type="button" onClick="fnCheck();" style="width: 80px; height: 30px; background:wheat; cursor:pointer;" >저장</button></a>
+            <button type="button" onClick="fnCheck();" style="width: 80px; height: 30px; background:wheat; cursor:pointer;" >저장</button>
         </div>
     </div>
 </body>

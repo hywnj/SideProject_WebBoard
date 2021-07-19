@@ -40,23 +40,27 @@
     <meta charset="UTF-8">
     <title>게시판</title>
     <link rel="stylesheet" type="text/css" href="/css/reg_style.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    
     <script>
         function fnCheck() {
             
             var title = frmMod.title.value;
-            //var reg_id = frmMod.reg_id.value;
             var email = frmMod.email.value;
+            var content = frmMod.content.value;
             
-            //필수 입력값 check
+            //필수 입력값 - title check
             if(title == ""){
                 alert("제목을 입력해주세요!");
                 return false;
             }
 
             //변경사항 여부 check
+            if( title == "<?=$tbl_bbs['title']?>" && email == "<?=$tbl_bbs['email']?>" && content == "<?=$tbl_bbs['content']?>" ){
+                alert("수정사항이 없습니다!");
+                return false;
+            }
 
-            //이메일 형식 check
+            //email form check
             if(email.trim()){
                 var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
                 if(!regExp.test(email)) {
@@ -74,7 +78,7 @@
         <h1>수정하기 페이지</h1>
         <div id="reg_area">
             <form action="/bbs_save.php?no=<?=$tbl_bbs['no']?>" name="frmMod" method="post">
-                <input type= "hidden" name="action_flag" value="m">
+                <input type= "hidden" name="action_flag" value="M">
                 <div id="in_title">
                     <h2 style="color:gray;">제목</h2>
                     <textarea name="title" id="utitle" rows="1" cols="55" placeholder="제목" maxlength="100" required><?=$tbl_bbs['title']; ?></textarea>
@@ -87,19 +91,17 @@
                 <div class="wi_line"></div>
                 <div id="in_content">
                 <h2 style="color:gray;">내용</h2>
-                    <textarea name="content" id="ucontent" placeholder="내용" style="margin-top: 6px;"><?php echo nl2br("$tbl_bbs[content]"); ?></textarea>
+                    <textarea name="content" id="ucontent" placeholder="내용" style="margin-top: 6px;"><?=$tbl_bbs['content'];?></textarea>
                 </div >
                 <div>
-                 <input type="text" name="reg_id" value = "<?=$tbl_bbs['reg_id'];?>">
+                 <input type="hidden" name="reg_id" value = "<?=$tbl_bbs['reg_id'];?>" >
                 </div>
             </form>
-            <!--<h3 style="margin-top: 10px; color:gray;">등록아이디</h3>-->    
         </div>
     </div>
     <div id="bt_se">
         <div id="reg">
-            <button type="button" onClick="fnCheck();" style="width: 80px; height: 30px; background:wheat; cursor:pointer;" >수정하기
-            </button>
+            <button type="button" onClick="fnCheck();" style="width: 80px; height: 30px; background:wheat; cursor:pointer;" >수정하기</button>
         </div>
         <div id="list"><a href="/bbs_list.php"><button style="width: 80px; height: 30px; cursor:pointer;">목록</button></a></div>
     </div>
