@@ -1,51 +1,52 @@
-<?php 
-    include  "C:/sideProject/Board/common/db.php"; 
-    include_once "C:/sideProject/Board/common/common.php"; 
+<?php
+include  "C:/sideProject/Board/common/db.php";
+include_once "C:/sideProject/Board/common/common.php";
 ?>
 <!doctype html>
+
 <head>
     <meta charset="UTF-8">
     <title>게시판</title>
     <link rel="stylesheet" type="text/css" href="/css/read_style.css" />
 </head>
+
 <body>
-	<?php
-        //해당 게시글 데이터 가져오기
-		$bno = $_GET['no']; 
-		$sql = mysqli_query($db,"select * from tbl_bbs where no=$bno"); 
-		if($sql){
-            $tbl_bbs = mysqli_fetch_array($sql);
-        }else{
-            echo "<script>
+    <?php
+    //해당 게시글 데이터 가져오기
+    $bno = $_GET['no'];
+    $sql = mysqli_query($db, "SELECT * FROM tbl_bbs WHERE no=$bno");
+    if ($sql) {
+        $tbl_bbs = mysqli_fetch_array($sql);
+    } else {
+        echo "<script>
             alert('DB 쿼리문 실행실패!');
             history.back();</script>";
-        }
-        //게시글이 없는 no일때
-        if(empty($tbl_bbs['title'])){
-            echo "<script>
+    }
+    //게시글이 없는 no일때
+    if (empty($tbl_bbs['title'])) {
+        echo "<script>
             alert('게시글이 존재하지 않습니다!');
             history.back();</script>";
-        }
-        
-        //작성자가 아닐때
-        if( empty($_SESSION['USER_ID']) || $_SESSION['USER_ID'] != $tbl_bbs['reg_id']){
-            echo '<style>#mod_btn, #del_btn{display:none !important;}</style>';
-        }  
-	?>
+    }
+
+    //작성자가 아닐때
+    if (empty($_SESSION['USER_ID']) || $_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
+        echo '<style>#mod_btn, #del_btn{display:none !important;}</style>';
+    }
+    ?>
     <!--Delete-->
     <script>
-        function delCheck(){
+        function delCheck() {
 
             var delConfrim = confirm("정말 삭제하시겠습니까?");
 
-            if(delConfrim){
+            if (delConfrim) {
                 //Form 전송
                 document.write(
-                    '<form id="frmDel" action="/bbs_save.php?no=<?=$bno;?>" method="post"><input type="hidden" name="action_flag" value="D"></form>'
+                    '<form id="frmDel" action="/bbs_save.php?no=<?= $bno; ?>" method="post"><input type="hidden" name="action_flag" value="D"></form>'
                 );
                 document.getElementById("frmDel").submit();
-            }
-            else{
+            } else {
                 return false;
             }
         }
@@ -53,30 +54,31 @@
 
     <!-- 글 불러오기 -->
     <div id="board_read">
-    <h1>게시글 상세페이지</h1>
+        <h1>게시글 상세페이지</h1>
         <table class="list-table">
             <thead>
                 <th style="width: 200px;"><b>제목</b></th>
-                <th colspan="3" style="width: 300px;"><?=$tbl_bbs['title'] ?></th>
+                <th colspan="3" style="width: 300px;"><?= $tbl_bbs['title'] ?></th>
             </thead>
             <tbody>
                 <tr>
                     <td><b>등록아이디</b></td>
-                    <td><?=$tbl_bbs['reg_id']; ?></td>
+                    <td><?= $tbl_bbs['reg_id']; ?></td>
                     <td><b>등록일자</b></td>
-                    <?php echo '<td>'.date("Y-m-d",strtotime($tbl_bbs['reg_date'])).'</td>'?>
+                    <?php echo '<td>' . date("Y-m-d", strtotime($tbl_bbs['reg_date'])) . '</td>' ?>
                 </tr>
             </tbody>
         </table>
         <div id="bo_content">
-                <?php echo nl2br("$tbl_bbs[content]"); ?>
+            <?php echo nl2br("$tbl_bbs[content]"); ?>
         </div>
         <!-- 목록, 수정, 삭제 -->
-        <div id="bo_ser" >
+        <div id="bo_ser">
             <a href="/bbs_list.php"><button style="width: 50px; height: 30px;">목록</button></a>
-            <a href="/bbs_modify.php?no=<?=$tbl_bbs['no']; ?>"><button id ="mod_btn" style="width: 50px; height: 30px">수정</button></a>
-            <button type="button" onClick="delCheck();" id ="del_btn" style="width: 50px; height: 30px; background:dimgrey;" >삭제</button>
+            <a href="/bbs_modify.php?no=<?= $tbl_bbs['no']; ?>"><button id="mod_btn" style="width: 50px; height: 30px">수정</button></a>
+            <button type="button" onClick="delCheck();" id="del_btn" style="width: 50px; height: 30px; background:dimgrey;">삭제</button>
         </div>
     </div>
 </body>
+
 </html>

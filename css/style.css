@@ -69,4 +69,13 @@ ul li {
 	text-align: right;
 	margin-top:40px;
 	right: 0;
+	
+}
+#sort_box {
+	width: 500px;
+	position: relative;
+	margin-left: 0;
+	text-align: left;
+	margin-top:0;
+	left: 0;
 }

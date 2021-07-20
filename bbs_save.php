@@ -89,9 +89,9 @@
     /*SQL Query문*/
     //register
     if($action_flag == "R"){
-        $sql = mysqli_query($db, "insert into tbl_bbs
+        $sql = mysqli_query($db, "INSERT INTO tbl_bbs
                                 (title, content, reg_id, email) 
-                                values
+                                VALUES
                                 ('".$title."','".$content."','".$reg_id."','".$email."')"); 
         if($sql){
         echo "<script>
@@ -102,11 +102,11 @@
     }
     //modify
     else if($action_flag == "M"){
-        $sql = mysqli_query($db,"update tbl_bbs 
-                                set title='".$title."'
+        $sql = mysqli_query($db,"UPDATE tbl_bbs 
+                                SET title='".$title."'
                                 , email='".$email."'
                                 , content='".$content."'
-                                , mod_date=now() where no=$bno");
+                                , mod_date=now() WHERE no=$bno");
         if($sql){
         echo "<script>
         alert('수정을 성공했습니다!');
@@ -115,7 +115,7 @@
         }
     }
     else if($action_flag == "D"){
-        $sql = mysqli_query($db, "delete from tbl_bbs where no=$bno");
+        $sql = mysqli_query($db, "DELETE FROM tbl_bbs WHERE no=$bno");
         if($sql){
             echo "<script>
             alert('글이 삭제되었습니다!');
@@ -134,5 +134,3 @@
 
     //sql 쿼리 실패
     echo "<script> alert('DB쿼리 실행실패!'); history.back(); </script>";
-
-    ?>
