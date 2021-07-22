@@ -18,7 +18,7 @@ if (empty($_SESSION['USER_ID'])) {
         location.href='/bbs_list.php';</script>";
 }
 ?>
-<!doctype html>
+<!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
@@ -32,13 +32,13 @@ if (empty($_SESSION['USER_ID'])) {
             var email = frmReg.email.value;
 
             //필수 입력값 - title check
-            if (title == "") {
+            if (!title) {
                 alert("제목을 입력해주세요!");
                 return false;
             }
 
             //email form check
-            if (email.trim()) {
+            if (email) {
                 var regExp = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
                 if (!regExp.test(email)) {
                     alert("이메일 형식이 올바르지 않습니다!");
@@ -61,7 +61,7 @@ if (empty($_SESSION['USER_ID'])) {
                 <thead>
                     <th style="width: 200px;"><b>제목</b></th>
                     <th colspan="3" style="width: 300px;">
-                        <input type="text" name="title" id="utitle" placeholder="제목을 입력해주세요." maxlength="100" required style="height:70%; width:100%; border: 0;">
+                        <input type="text" name="title" placeholder="제목을 입력해주세요." maxlength="100" required style="height:70%; width:100%; border: 0;">
                     </th>
                 </thead>
                 <tbody>

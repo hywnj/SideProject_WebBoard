@@ -20,13 +20,13 @@ ul li {
 }
 /* 게시판 read */
 #board_read {
-	width:900px;
+	width:1000px;
 	position: relative;
 	word-break:break-all;
 }
 .list-table {
 	margin-top: 40px;
-	width:900px;
+	width:1000px;
 }
 .list-table thead th{
 	text-align: left;

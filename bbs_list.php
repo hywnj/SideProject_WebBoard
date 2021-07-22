@@ -1,7 +1,7 @@
 <?php
 include_once "C:/sideProject/Board/common/db.php";
 include_once "C:/sideProject/Board/common/common.php";
-$_SESSION['USER_ID'] = 'ju04';
+$_SESSION['USER_ID'] = 'pp_won';
 print_r($_SESSION);
 
 //비회원 - 버튼 숨기기
@@ -13,7 +13,7 @@ if (empty($_SESSION['USER_ID'])) {
 $catagory = (isset($_GET['catagory'])) ? $_GET['catagory'] : "";
 $keyword = (isset($_GET['keyword'])) ? $_GET['keyword'] : "";
 $pno = (isset($_GET['page'])) ? $_GET['page'] : 1;
-$sort = (isset($_GET['sort'])) ? $_GET['sort'] : "";
+$sort = (isset($_GET['sort'])) ? $_GET['sort'] : "desc";
 
 //변수
 $list_cnt = 5; //한 페이지 최대 게시글 수
@@ -33,24 +33,21 @@ if (!empty($catagory) && ($catagory === "title" || $catagory === "content") && !
 $sql_cnt = mysqli_query($db, "SELECT count(no) FROM tbl_bbs WHERE(1=1) $sql_keyword");
 $tbl_bbs_cnt = mysqli_fetch_assoc($sql_cnt);
 
-//sort
-if(!empty($sort) && ($sort === "desc" || $sort === "asc" || $sort === "title")){
-    if($sort === "desc"){
-        $sql_sort = " ORDER BY no DESC";
-    }else if($sort === "asc"){
-        $sql_sort = " ";
+//정렬
+if ( $sort === "desc" || $sort === "asc" || $sort === "title" ) {
+    if ($sort === "title") {
+        $sql_sort = " ORDER BY $sort ASC";
+    } else {
+        $sql_sort = " ORDER BY reg_date $sort";
     }
-    else{
-        $sql_sort = " ORDER BY title ASC";
-    }
-    
+} else {
+    $sql_sort = " ORDER BY reg_date DESC";
 }
+
 // 2) limit 추가 - 리스트에 표시할 것;
 $sql_list = mysqli_query($db, "SELECT no, title, reg_id, reg_date, email 
-                                FROM tbl_bbs WHERE(1=1) $sql_sort
+                                FROM tbl_bbs WHERE(1=1) $sql_keyword $sql_sort
                                 LIMIT $list_start, $list_cnt");
-
-
 
 //DB쿼리에서 불러온 값으로 초기화하는 변수 선언
 $total_no = $tbl_bbs_cnt['count(no)']; // 총 게시글 수
@@ -63,12 +60,18 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
 
 ?>
 
-<!doctype html>
+<!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
     <title>게시판</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <script>
+        function changeSort(option){
+            //정렬 option 선택시, 1번째 page로 세팅
+            location.replace("/bbs_list.php?page=1&catagory=<?=$catagory?>&keyword=<?=$keyword?>&sort=" + option);
+        }
+    </script>
 </head>
 
 <body>
@@ -78,8 +81,7 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
             <div id="reset_btn"><a href="/bbs_list.php"><button style="width: 80px; height: 30px;">처음으로</button></a></div>
         <? } ?>
         <div id="search_box">
-            <form name="frmSrch" method="get">
-                <input type="hidden" name="page" value="1">
+            <form name="frmSrch"  method="get">
                 <select name="catagory" style="width:50px; height: 30px">
                     <option value="title"<? if($catagory === 'title') echo ' SELECTED' ?>>제목</option>
                     <option value="content"<? if($catagory === 'content') echo ' SELECTED' ?>>내용</option>
@@ -90,14 +92,12 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
         </div>
         <!--정렬 셀렉트박스-->
         <div id="sort_box">
-            <form name="frmSrt" method="get">
-                <select name="sort" style="width: 90px; height:30px; margin-top:0;" onchange="changeSort()">
-                    <option value="none">==정렬==</option>
+            <form name="frmSrt">
+                <select name="sort" style="width: 90px; height:30px; margin-top:0;" onChange="changeSort(this.value)">
                     <option value="desc"<? if($sort === 'desc') echo ' SELECTED' ?>>내림차순</option>
                     <option value="asc"<? if($sort === 'asc') echo ' SELECTED' ?>>오름차순</option>
                     <option value="title"<? if($sort === 'title') echo ' SELECTED' ?>>제목순</option>
                 </select>
-                
                 <h4 style="margin-left: 7px; ">총 <?= $total_no ?>개</h4>
             </form>
         </div>
@@ -108,7 +108,7 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                     <th width="500">제목</th>
                     <th width="120">등록아이디</th>
                     <th width="100">등록일</th>
-                    <th width="100">이메일</th>
+                    <th width="150">이메일</th>
                 </tr>
             </thead>
             <? while ($tbl_bbs = mysqli_fetch_array($sql_list)) { ?>
@@ -129,7 +129,7 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                 //이전 - 시작 페이지 집합일때를 제외하고는 모두 표시
                 if ($page_start != 1) {
                 ?>
-                    <td><a href="/bbs_list.php?page=<?= $page_start - 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>">
+                    <td><a href="/bbs_list.php?page=<?= $page_start - 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?=$sort?>">
                             < 이전 </a>
                     </td>
                     <?
@@ -142,13 +142,13 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                     <?
                     } else { //현재 페이지 아닐때
                     ?>
-                        <td><a href="/bbs_list.php?page=<?= $i ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>">[<?= $i ?>]</a></td>
+                        <td><a href="/bbs_list.php?page=<?= $i ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?=$sort?>">[<?= $i ?>]</a></td>
 
                     <? }
                 }
                 //다음 - 맨 마지막 페이지 집합일때를 제외하고는 모두 표시
                 if ($total_page != $page_end) { ?>
-                    <td><a href="/bbs_list.php?page=<?= $page_end + 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>">다음 ></a></td>
+                    <td><a href="/bbs_list.php?page=<?= $page_end + 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?=$sort?>">다음 ></a></td>
                 <?
                 }
                 ?>

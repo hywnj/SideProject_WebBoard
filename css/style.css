@@ -4,7 +4,7 @@
 * {
 	margin: 10 auto;
 	padding: 0;
-	font-family:   'Sans-Serif';
+	font-family:'Sans-Serif';
 }
 a {
 	text-decoration: none;
@@ -22,9 +22,47 @@ ul li {
 	text-align:center;
 }
 
+/*회원가입*/
+#sign_area {
+	width: 500px;
+	position: relative;
+}
+#sign_form{
+	margin-top:50px;
+}
+#sign_input{
+	width: 500px;
+	height:40px;
+	margin-top: 10px;
+}
+#sign_btn{
+	width: 80px;
+	height: 35px;
+	background-color: royalblue;
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+	float: right;
+}
+
+/*main화면*/
+#main_area {
+	width: auto;
+	margin-top: 10%;
+	position: relative;
+	text-align: center;
+}
+#list_btn{
+	width: 150px;
+	height: 30px;
+	background-color:royalblue;
+	color: white;
+}
+
+
 /* 게시판 목록 */
 #board_area {
-	width: 900px;
+	width: 940px;
 	position: relative;
 }
 .list-table {

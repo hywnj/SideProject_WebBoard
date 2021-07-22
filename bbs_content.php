@@ -2,7 +2,7 @@
 include  "C:/sideProject/Board/common/db.php";
 include_once "C:/sideProject/Board/common/common.php";
 ?>
-<!doctype html>
+<!DOCTYPE html>
 
 <head>
     <meta charset="UTF-8">
