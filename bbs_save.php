@@ -7,15 +7,17 @@ include_once "C:/sideProject/Board/common/common.php";
 if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
     echo "<script>
         alert('No direct access allowed');
-        location.href='/bbs_list.php';</script>";
+        location.href='/index.php';</script>";
     exit('No direct access allowed');
 }
 
-// parameter check
+// Parameter check
 $action_flag = $_POST['action_flag'];
 
 //게시글 관련 변수
 $bno = $_GET['no'];
+$pno = $_GET['page'];
+$sort = $_GET['sort'];
 $reg_id = trim($_POST['reg_id']);
 $title = trim($_POST['title']);
 $content = $_POST['content'];
@@ -23,15 +25,14 @@ $content = $_POST['content'];
 //회원가입 관련 변수
 $user_nm = trim($_POST['user_nm']);
 $user_id = trim($_POST['user_id']);
-//비밀번호 암호화 - sha256
+//비밀번호 암호화
 $user_pw = hash('sha256', trim($_POST['user_pw']));
-echo $user_pw;
-exit;
 $phone = str_replace("-", "", trim($_POST['phone']));
 
-//공통
+//공통 변수
 $email = trim($_POST['email']);
 
+/* action_flag 별 check */
 //Register, Modify 공통 check
 if ($action_flag == "R" || $action_flag == "M") {
 
@@ -80,7 +81,7 @@ if ($action_flag == "M" || $action_flag == "D") {
     //Delete
     else if ($action_flag === "D") {
         // 등록번호 SELECT
-        $sql = mysqli_query($db, "select reg_id from tbl_bbs where no=$bno");
+        $sql = mysqli_query($db, "SELECT reg_id FROM tbl_bbs WHERE no=$bno");
         if (!$sql) {
             echo "<script> alert('DB쿼리 실행실패!'); history.back(); </script>";
             exit;
@@ -107,13 +108,25 @@ if ($action_flag === "S") {
     } else {
         if (mb_strlen($user_nm) > 10) {
             echo "<script>
-            alert('이름은 10자 이하로 입력해주세요!');
-            history.back();</script>";
+                alert('이름은 10자 이하로 입력해주세요!');
+                history.back();</script>";
             exit;
         }
         if (mb_strlen($user_id) < 2 || mb_strlen($user_id) > 10) {
             echo "<script>
             alert('아이디는 최소 2자 이상, 최대 10자 이하로 설정해주세요!');
+            history.back();</script>";
+            exit;
+        }
+        if (mb_strlen($email) > 40) {
+            echo "<script>
+            alert('이메일은 40자 이하로 입력해주세요!');
+            history.back();</script>";
+            exit;
+        }
+        if (mb_strlen($phone) > 15) {
+            echo "<script>
+            alert('이메일은 15자 이하로 입력해주세요!');
             history.back();</script>";
             exit;
         }
@@ -127,10 +140,17 @@ if ($action_flag == "R") {
                                 (title, content, reg_id, email) 
                                 VALUES
                                 ('" . $title . "','" . $content . "','" . $reg_id . "','" . $email . "')");
+
+    $sql_read = mysqli_query($db, "SELECT no FROM tbl_bbs 
+                                    WHERE title='" . $title . "' AND content='" . $content . "' AND reg_id='" . $reg_id . "' AND email='" . $email . "' 
+                                    ORDER BY reg_date DESC 
+                                    LIMIT 1");
+    $tbl_bbs = mysqli_fetch_assoc($sql_read);
+
     if ($sql) {
         echo "<script>
-        alert('저장을 성공했습니다!');
-        location.href='/bbs_list.php';</script>";
+            alert('저장을 성공했습니다!');
+            location.href='/bbs_content.php?page=1&no=" . $tbl_bbs['no'] . "';</script>";
         exit;
     }
 }
@@ -144,23 +164,25 @@ else if ($action_flag == "M") {
     if ($sql) {
         echo "<script>
         alert('수정을 성공했습니다!');
-        location.href='/bbs_list.php';</script>";
+        location.href='/bbs_content.php?page=" . $pno . "&no=" . $bno . "&sort=" . $sort . "';</script>";
         exit;
     }
+    //delete
 } else if ($action_flag == "D") {
     $sql = mysqli_query($db, "DELETE FROM tbl_bbs WHERE no=$bno");
     if ($sql) {
         echo "<script>
             alert('글이 삭제되었습니다!');
-            location.href='/bbs_list.php';</script>";
+            location.href='/bbs_list.php?page=" . $pno . "';</script>";
         exit;
     }
+    //sign
 } else if ($action_flag === "S") {
     $sql = mysqli_query($db, "INSERT INTO tbl_user 
-                                (user_nm, 'user_id', user_pw, email, phone)
+                                (user_nm, user_id, user_pw, email, phone)
                                 VALUES 
                                 ('" . $user_nm . "', '" . $user_id . "', '" . $user_pw . "', '" . $email . "', '" . $phone . "')");
-     if ($sql) {
+    if ($sql) {
         echo "<script>
         alert('회원가입이 완료되었습니다!');
         location.href='/index.php';</script>";

@@ -1,20 +1,24 @@
 <?php
 include  "C:/sideProject/Board/common/db.php";
 include_once "C:/sideProject/Board/common/common.php";
+
+
 ?>
 <!DOCTYPE html>
-
 <head>
     <meta charset="UTF-8">
     <title>게시판</title>
-    <link rel="stylesheet" type="text/css" href="/css/read_style.css" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
 </head>
 
 <body>
     <?php
     //해당 게시글 데이터 가져오기
     $bno = $_GET['no'];
+    $pno = (isset($_GET['page'])) ? $_GET['page'] : 1;
+    $sort = $_GET['sort'];
     $sql = mysqli_query($db, "SELECT * FROM tbl_bbs WHERE no=$bno");
+
     if ($sql) {
         $tbl_bbs = mysqli_fetch_array($sql);
     } else {
@@ -22,8 +26,9 @@ include_once "C:/sideProject/Board/common/common.php";
             alert('DB 쿼리문 실행실패!');
             history.back();</script>";
     }
+
     //게시글이 없는 no일때
-    if (empty($tbl_bbs['title'])) {
+    if (empty($bno)) {
         echo "<script>
             alert('게시글이 존재하지 않습니다!');
             history.back();</script>";
@@ -43,7 +48,7 @@ include_once "C:/sideProject/Board/common/common.php";
             if (delConfrim) {
                 //Form 전송
                 document.write(
-                    '<form id="frmDel" action="/bbs_save.php?no=<?= $bno; ?>" method="post"><input type="hidden" name="action_flag" value="D"></form>'
+                    '<form id="frmDel" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno; ?>" method="post"><input type="hidden" name="action_flag" value="D"></form>'
                 );
                 document.getElementById("frmDel").submit();
             } else {
@@ -55,7 +60,7 @@ include_once "C:/sideProject/Board/common/common.php";
     <!-- 글 불러오기 -->
     <div id="board_read">
         <h1>게시글 상세페이지</h1>
-        <table class="list-table">
+        <table class="list-table-content">
             <thead>
                 <th style="width: 200px;"><b>제목</b></th>
                 <th colspan="3" style="width: 300px;"><?= $tbl_bbs['title'] ?></th>
@@ -74,8 +79,8 @@ include_once "C:/sideProject/Board/common/common.php";
         </div>
         <!-- 목록, 수정, 삭제 -->
         <div id="bo_ser">
-            <a href="/bbs_list.php"><button style="width: 50px; height: 30px;">목록</button></a>
-            <a href="/bbs_modify.php?no=<?= $tbl_bbs['no']; ?>"><button id="mod_btn" style="width: 50px; height: 30px">수정</button></a>
+            <a href="/bbs_list.php?page=<?= $pno ?>&sort=<?= $sort ?>"><button style="width: 50px; height: 30px;">목록</button></a>
+            <a href="/bbs_modify.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no']; ?>&sort=<?= $sort; ?>"><button id="mod_btn" style="width: 50px; height: 30px">수정</button></a>
             <button type="button" onClick="delCheck();" id="del_btn" style="width: 50px; height: 30px; background:dimgrey;">삭제</button>
         </div>
     </div>

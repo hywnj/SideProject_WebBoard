@@ -1,32 +1,54 @@
 <?php
 include_once "C:/sideProject/Board/common/db.php";
-include_once "C:/sideProject/Board/common/common.php"; ?>
+include_once "C:/sideProject/Board/common/common.php";
 
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-<!--필요
-    1. ID, PW 입력창
-    2. Login 버튼 -> 계정 확인 후 bbs_list.php로
-    3. 회원가입 -> bbs_sign.php
-    4. 아이디/비밀번호 찾기 -> 이메일 인증번호 인증
-        - 아이디 찾기: 이름, 이메일 
-        - 비밀번호 찾기: 이름, 아이디, 이메일 
-    5. 
-    * login이랑 sign이랑 db 겹치는 사항있나? 
-        - 로그인: id, pw 일치값 
-        - 회원가입: 저장 / 중복확인 
+//변수
+$user_id = $_POST['user_id'];
+$user_pw = hash('sha256', trim($_POST['user_pw']));
 
-    * 회원 계정 DB Table 생성
-    * 현재는 Session에 user id로 -> 입력 id 받아서 저장 / logout: session 닫기 -> login과 logout도 action_flag로 식별?
--->
+$sql_id = mysqli_query($db, "SELECT user_id, user_pw, pw_cnt FROM tbl_user WHERE user_id='" . $user_id . "'");
+$tbl_user = mysqli_fetch_assoc($sql_id);
+$pw_cnt = $tbl_user['pw_cnt'];
 
-    
-</body>
-</html>
+//등록회원인지 확인
+if (!$tbl_user['user_id']) {
+?>
+    <script>
+        alert('일치하는 아이디가 없습니다!');
+        location.href = '/index.php';
+    </script>
+    <?
+} else {
+    //회원정보 불일치
+    if ($user_id === $tbl_user['user_id'] && $user_pw !== $tbl_user['user_pw']) {
+        ++$pw_cnt;
+        //비밀번호 불일치 횟수 update
+        $sql_pwcnt = mysqli_query($db, "UPDATE tbl_user SET pw_cnt=" . $pw_cnt . " WHERE user_id='" . $user_id . "'");
+    ?> <script>
+            alert('비밀번호가 일치하지 않습니다!( ' + <?= $pw_cnt ?> + '회/ 5회)');
+            location.href = '/index.php';
+        </script>
+        <?      //비밀번호 5회이상 오류시   
+        if ($pw_cnt > 5) {
+        ?> <script>
+                alert('비밀번호 불일치 5회이상');
+                location.href = '/index.php';
+            </script>
+<?        }
+    } else {
+        //회원정보 일치
+        session_start();
+        $_SESSION['USER_ID'] = $user_id;
+        $_SESSION['USER_PW'] = $user_pw;
+
+        //비밀번호 불일치 횟수 초기화
+        $sql_pwcnt_reset = mysqli_query($db, "UPDATE tbl_user SET pw_cnt=0 WHERE user_id='" . $user_id . "'");
+
+        echo "<script>
+                alert('환영합니다!');
+                location.href = '/bbs_list.php';
+            </script>";
+
+        exit;
+    }
+}

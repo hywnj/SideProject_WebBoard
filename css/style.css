@@ -1,6 +1,6 @@
 @charset "utf-8";
 
-/* 전체 옵션 */
+/* 전체옵션 */
 * {
 	margin: 10 auto;
 	padding: 0;
@@ -22,7 +22,50 @@ ul li {
 	text-align:center;
 }
 
-/*회원가입*/
+/* main 화면 - index */
+#main_area {
+	width: 500px;
+	height: 700px;
+	position: relative;
+	text-align: center;
+	margin: 0 auto;
+	margin-top: 100px;
+}
+#login_box{
+	margin-top: 10%;
+	width: 500px;
+	height: 300px;
+	text-align: left;
+	border:1px solid #CCC;
+}
+#login_text{
+	margin-right: 5%;
+	margin-left: 20px;
+	color:#242424;
+}
+#login_input{
+	width: 450px; 
+	height: 30px;
+	margin-top: -50px;
+	margin-left: 20px;
+}
+#login_btn{
+	margin-top: 5%;
+	margin-left: 200px;
+	width: 80px;
+	height: 30px;
+	background-color:rebeccapurple;
+	color: white;
+	font-weight: bold;
+}
+#list_btn{
+	width: 150px;
+	height: 30px;
+	background-color:royalblue;
+	color: white;
+}
+
+/* 회원가입 */
 #sign_area {
 	width: 500px;
 	position: relative;
@@ -44,23 +87,23 @@ ul li {
 	font-size: 15px;
 	float: right;
 }
+#main_btn{
+	width: 80px;
+	height: 35px;
+	background-color:#CCC;
+	color: black;
+	font-size: 15px;
+	float: left;
+}
 
-/*main화면*/
-#main_area {
-	width: auto;
-	margin-top: 10%;
-	position: relative;
-	text-align: center;
-}
-#list_btn{
-	width: 150px;
-	height: 30px;
-	background-color:royalblue;
-	color: white;
-}
 
 
 /* 게시판 목록 */
+#user_area{
+	width: 940px;
+	text-align: right;
+	margin-top: 30px;
+}
 #board_area {
 	width: 940px;
 	position: relative;
@@ -116,4 +159,61 @@ ul li {
 	text-align: left;
 	margin-top:0;
 	left: 0;
+}
+
+
+/* 상세게시판, 등록, 수정 */
+#board_read {
+	width:1000px;
+	position: relative;
+	word-break:break-all;
+}
+.list-table-content {
+	margin-top: 40px;
+	width:1000px;
+}
+.list-table-content thead th{
+	text-align: left;
+	height:50px;
+	border-top:2px solid #09C;
+	border-bottom:1px solid #CCC;
+	font-weight: bold;
+	font-size: 25px;
+	padding-left: 12px;
+}
+.list-table-content tbody td{
+	width: 225px;
+	padding:10px 0;
+	border-bottom:1px solid #CCC; height:20px;
+	font-size: 15px ;
+	padding-left: 12px;
+}
+#user_info {
+	font-size:14px;
+}
+#user_info ul li {
+	float:left;
+	margin-left:10px;
+}
+#bo_line {
+	width:880px;
+	height:2px;
+	background: gray;
+	margin-top:20px;
+}
+#bo_content {
+	margin-top:20px;
+	margin-left: 12px;
+	margin-bottom: 20px;
+	border-bottom:1px solid #CCC; height:400px;
+}
+#bo_ser {
+	font-size:15px;
+	color:#333;
+	position: absolute;
+	right: 0;
+}
+#bo_ser > ul > li {
+	float:left;
+	margin-left:10px;
 }
