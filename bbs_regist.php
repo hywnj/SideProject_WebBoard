@@ -5,7 +5,7 @@ echo $_SESSION['USER_ID'];
 
 //url 직접접근 방지
 if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
-    echo"<script> 
+    echo "<script> 
             alert('No direct access allowed');
             location.href='/index.php';
         </script>";
@@ -22,6 +22,7 @@ if (empty($_SESSION['USER_ID'])) {
 ?>
 
 <!DOCTYPE html>
+
 <head>
     <meta charset="UTF-8">
     <title>게시판</title>
@@ -49,6 +50,22 @@ if (empty($_SESSION['USER_ID'])) {
             }
             //form 제출
             document.frmReg.submit();
+        }
+
+        //내용 작성 후 저장하지 않고 목록으로 돌아갈때 Check
+        function conCheck() {
+            var title = frmReg.title.value;
+            var content = frmReg.content.value;
+            var email = frmReg.email.value;
+
+            if (title || content || email) {
+                var goBackConfirm = confirm("작성한 내용이 저장되지 않고 삭제됩니다. 목록으로 이동하시겠습니까?");
+                if (!goBackConfirm) {
+                    return false;
+                }
+            }
+            //목록으로 이동
+            location.href = '/bbs_list.php';
         }
     </script>
 
@@ -84,7 +101,7 @@ if (empty($_SESSION['USER_ID'])) {
             </div>
         </form>
         <div id="bo_ser">
-            <a href="/bbs_list.php"><button style="width: 50px; height: 30px;">목록</button></a>
+            <button type="button" onClick="conCheck();" style="width: 50px; height: 30px;">목록</button>
             <button type="button" onClick="fnCheck();" style="width: 80px; height: 30px; background:wheat; cursor:pointer;">저장</button>
         </div>
     </div>

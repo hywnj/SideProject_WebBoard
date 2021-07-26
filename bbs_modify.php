@@ -6,7 +6,7 @@ include_once "C:/sideProject/Board/common/common.php";
 if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
     echo "<script>
         alert('No direct access allowed');
-        location.href='/index.php';</script>";
+        history.back();</script>";
     exit('No direct access allowed');
 }
 

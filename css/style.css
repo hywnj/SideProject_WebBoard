@@ -150,7 +150,6 @@ ul li {
 	text-align: right;
 	margin-top:40px;
 	right: 0;
-	
 }
 #sort_box {
 	width: 500px;
@@ -160,6 +159,7 @@ ul li {
 	margin-top:0;
 	left: 0;
 }
+
 
 
 /* 상세게시판, 등록, 수정 */
@@ -205,7 +205,7 @@ ul li {
 	margin-top:20px;
 	margin-left: 12px;
 	margin-bottom: 20px;
-	border-bottom:1px solid #CCC; height:400px;
+	border-bottom:1px solid #09C; height:400px;
 }
 #bo_ser {
 	font-size:15px;
@@ -216,4 +216,76 @@ ul li {
 #bo_ser > ul > li {
 	float:left;
 	margin-left:10px;
+}
+
+/*댓글*/
+.reply_view {
+	width: 1000px;
+	margin-top:15px; 
+	word-break:break-all;
+	margin-top:20px;
+	margin-left: 12px;
+}
+.dap_lo {
+	font-size: 14px;
+	border-top:1px solid #ccc;
+}
+.dap_to {
+	margin-top:10px;
+	border-bottom:1px solid #ccc;
+}
+.rep_me {
+	font-size:12px;
+}
+.rep_me ul li {
+	float:left;
+	width: 30px;
+}
+.dat_delete {
+	display: none;
+}	
+.dat_edit {
+	display:none;
+}
+.dap_sm {
+	position: absolute;
+	top: 10px;
+}
+.dap_edit_t{
+	width:520px;
+	height:70px;
+	position: absolute;
+	top: 40px;
+}
+.re_mo_bt {
+	position: absolute;
+	top:40px;
+	right: 5px;
+	width: 90px;
+	height: 72px;
+}
+#reply_btn{
+	width: 50px;
+	height: 30px;
+	margin-left: 950px;
+	background-color: #09C;
+	color: white;
+	font-weight: bold;
+}
+#re_content {
+	width:1000px;
+	height: 60px; 
+}
+.dap_ins {
+	margin-top:20px;
+}
+.re_bt {
+	position: absolute;
+	width:100px;
+	height:56px;
+	font-size:16px;
+	margin-left: 10px; 
+}
+#foot_box {
+	height: 50px; 
 }
