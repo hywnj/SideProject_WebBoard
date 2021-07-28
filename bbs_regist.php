@@ -2,6 +2,7 @@
 include_once "C:/sideProject/Board/common/db.php";
 include_once "C:/sideProject/Board/common/common.php";
 echo $_SESSION['USER_ID'];
+echo $_SESSION['EMAIL'];
 
 //url 직접접근 방지
 if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
@@ -87,11 +88,11 @@ if (empty($_SESSION['USER_ID'])) {
                     <tr>
                         <td><b>등록아이디</b></td>
                         <td>
-                            <input name="reg_id" id="reg_input" value=<?= $_SESSION['USER_ID'] ?> readonly>
+                            <input tyep="text" name="reg_id" id="reg_input" value=<?= $_SESSION['USER_ID'] ?> readonly>
                         </td>
                         <td><b>이메일</b></td>
                         <td>
-                            <input type="text" name="email" id="reg_input" placeholder="이메일을 입력해주세요." maxlength="100" required style="height:100%; width:100%; border: 0;">
+                            <input type="text" name="email" id="reg_input" placeholder="이메일을 입력해주세요." maxlength="100" style="height:100%; width:100%; border: 0;" value=<?= $_SESSION['EMAIL'] ?> required>
                         </td>
                     </tr>
                 </tbody>

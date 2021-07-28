@@ -78,15 +78,6 @@ ul li {
 	height:40px;
 	margin-top: 10px;
 }
-#sign_btn{
-	width: 80px;
-	height: 35px;
-	background-color: royalblue;
-	color: white;
-	font-weight: bold;
-	font-size: 15px;
-	float: right;
-}
 #main_btn{
 	width: 80px;
 	height: 35px;
@@ -99,11 +90,6 @@ ul li {
 
 
 /* 게시판 목록 */
-#user_area{
-	width: 940px;
-	text-align: right;
-	margin-top: 30px;
-}
 #board_area {
 	width: 940px;
 	position: relative;
@@ -143,6 +129,13 @@ ul li {
 	color:red;
 	margin-left: 15px; 
 }
+#user_box{
+	width: 940px;
+	position: relative;
+	text-align: right;
+	margin-top:20px;
+	right: 0;
+}
 #search_box {
 	width: 500px;
 	position: relative;
@@ -158,6 +151,20 @@ ul li {
 	text-align: left;
 	margin-top:0;
 	left: 0;
+}
+#sign_btn{
+	width: 80px;
+	height: 35px;
+	background-color: royalblue;
+	color: white;
+	font-weight: bold;
+	font-size: 15px;
+}
+#login_list_btn{
+	width: 80px;
+	height: 35px;
+	font-weight: bold;
+	font-size: 15px;
 }
 
 
@@ -203,15 +210,14 @@ ul li {
 }
 #bo_content {
 	margin-top:20px;
-	margin-left: 12px;
 	margin-bottom: 20px;
 	border-bottom:1px solid #09C; height:400px;
 }
 #bo_ser {
 	font-size:15px;
 	color:#333;
-	position: absolute;
-	right: 0;
+	position: relative;
+	float: right;
 }
 #bo_ser > ul > li {
 	float:left;
@@ -224,7 +230,6 @@ ul li {
 	margin-top:15px; 
 	word-break:break-all;
 	margin-top:20px;
-	margin-left: 12px;
 }
 .dap_lo {
 	font-size: 14px;
@@ -265,12 +270,12 @@ ul li {
 	height: 72px;
 }
 #reply_btn{
-	width: 50px;
-	height: 30px;
-	margin-left: 950px;
-	background-color: #09C;
-	color: white;
-	font-weight: bold;
+	width: 40px;
+	height: 25px;
+	float: right;
+	background-color: rgb(0, 153, 204);
+	color:white;
+	margin-top: 0;
 }
 #re_content {
 	width:1000px;
@@ -278,6 +283,10 @@ ul li {
 }
 .dap_ins {
 	margin-top:20px;
+}
+#reply_content_textarea{
+	width: 1000px;
+	height: 60px;
 }
 .re_bt {
 	position: absolute;
@@ -288,4 +297,10 @@ ul li {
 }
 #foot_box {
 	height: 50px; 
+}
+#pri_next{
+	width: 1000px;
+	margin-top: 50px;
+	text-align: left;
+	border-top:1px solid #ccc;
 }

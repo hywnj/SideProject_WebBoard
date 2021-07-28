@@ -6,9 +6,10 @@ include_once "C:/sideProject/Board/common/common.php";
 $user_id = $_POST['user_id'];
 $user_pw = hash('sha256', $_POST['user_pw']);
 
-$sql_id = mysqli_query($db, "SELECT user_id, user_pw, pw_cnt FROM tbl_user WHERE user_id='" . $user_id . "'");
+$sql_id = mysqli_query($db, "SELECT user_id, user_pw, pw_cnt, email FROM tbl_user WHERE user_id='" . $user_id . "'");
 $tbl_user = mysqli_fetch_assoc($sql_id);
 $pw_cnt = $tbl_user['pw_cnt'];
+$email = $tbl_user['email'];
 
 //등록회원인지 확인
 if (!$tbl_user['user_id']) {
@@ -40,12 +41,14 @@ if (!$tbl_user['user_id']) {
         session_start();
         $_SESSION['USER_ID'] = $user_id;
         $_SESSION['USER_PW'] = $user_pw;
+        $_SESSION['EMAIL'] = $email;
+        
 
         //비밀번호 불일치 횟수 초기화
         $sql_pwcnt_reset = mysqli_query($db, "UPDATE tbl_user SET pw_cnt=0 WHERE user_id='" . $user_id . "'");
 
     ?> <script>
-            alert('환영합니다!');
+            alert('환영합니다!<?$email?>dd<?$_SESSION['EMAIL']?>');
             location.href = '/bbs_list.php';
         </script>
 

@@ -21,26 +21,25 @@ $pno = $_GET['page'];
 $sort = $_GET['sort'];
 //reg_id도 모두 SERVER에서 받아오는걸로 수정하기
 //$reg_id = trim($_POST['reg_id']);
-$reg_id = $_SERVER['USER_ID'];
+$reg_id = $_SESSION['USER_ID'];
 $title = trim($_POST['title']);
 $content = $_POST['content'];
-
-//회원가입 관련 변수
 $user_nm = trim($_POST['user_nm']);
 $user_id = trim($_POST['user_id']);
-//비밀번호 암호화
 $user_pw = hash('sha256', trim($_POST['user_pw']));
 $phone = str_replace("-", "", trim($_POST['phone']));
 
 //댓글
 $reply_content = $_POST['reply_content'];
+$reno = $_GET['reno'];
 
 //공통 변수
 $email = trim($_POST['email']);
 
+
 /* action_flag 별 check */
 //Register, Modify 공통 check
-if ($action_flag == "R" || $action_flag == "M") {
+if (($action_flag == "R" || $action_flag == "M") && empty($reno)) {
 
     //비회원 접근
     if (empty($_SESSION['USER_ID'])) {
@@ -69,7 +68,7 @@ if ($action_flag == "R" || $action_flag == "M") {
 }
 
 // Modify, Delete 계정확인
-if ($action_flag == "M" || $action_flag == "D") {
+if (($action_flag == "M" || $action_flag == "D") && empty($reno)) {
     // $bno 필수 check
     if (!$bno) {
     ?> <script>
@@ -81,7 +80,7 @@ if ($action_flag == "M" || $action_flag == "D") {
     //Modify
     if ($action_flag == "M") {
         // Session, reg_id 비교
-        if ($_SESSION['USER_ID'] != $reg_id) {
+        if ($reg_id !== $user_id) {
         ?> <script>
                 alert('계정이 달라 수정권한이 없습니다!');
                 history.back();
@@ -155,11 +154,11 @@ if ($action_flag === "S") {
 
 /*SQL Query문*/
 //register
-if ($action_flag == "R") {
+if ($action_flag === "R") {
     $sql = mysqli_query($db, "INSERT INTO tbl_bbs
-                                (title, content, reg_id, email) 
+                                (title, content, reg_id, email, reg_date) 
                                 VALUES
-                                ('" . $title . "','" . $content . "','" . $reg_id . "','" . $email . "')");
+                                ('" . $title . "','" . $content . "','" . $reg_id . "','" . $email . "','".date("Y-m-d H:i:s")."')");
 
     $sql_read = mysqli_query($db, "SELECT no FROM tbl_bbs 
                                     WHERE title='" . $title . "' AND content='" . $content . "' AND reg_id='" . $reg_id . "' AND email='" . $email . "' 
@@ -175,28 +174,52 @@ if ($action_flag == "R") {
     <? exit;
     }
 } //modify
-else if ($action_flag == "M") {
-    $sql = mysqli_query($db, "UPDATE tbl_bbs 
+else if ($action_flag === "M") {
+    if (empty($reno)) {
+        $sql = mysqli_query($db, "UPDATE tbl_bbs 
                                 SET title='" . $title . "'
                                 , email='" . $email . "'
                                 , content='" . $content . "'
-                                , mod_date=now() WHERE no=$bno");
+                                , mod_date='".date("Y-m-d H:i:s")." 
+                                 WHERE no=$bno");
+    } else {
+        $sql = mysqli_query($db, "UPDATE tbl_bbs_reply 
+                                SET reply_content='" . $reply_content . "'
+                                 WHERE reply_no=" . $reno);
+    }
     if ($sql) {
     ?> <script>
             alert('수정을 성공했습니다!');
-            location.href = '/bbs_content.php?page=" . $pno . "&no=" . $bno . "&sort=" . $sort . "';
+            location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
         </script>
-    <? exit;
+        <? exit;
+    }else{
+        echo "쿼리실패";
     }
 } //delete 
-else if ($action_flag == "D") {
-    $sql = mysqli_query($db, "DELETE FROM tbl_bbs WHERE no=$bno");
-    if ($sql) {
-    ?> <script>
-            alert('글이 삭제되었습니다!');
-            location.href = '/bbs_list.php?page=<?= $pno ?>';
-        </script>
-    <? exit;
+else if ($action_flag === "D") {
+    if (empty($reno)) { //게시글 삭제
+        $sql = mysqli_query($db, "DELETE FROM tbl_bbs WHERE no=$bno");
+        $sql_reply_del = mysqli_query($db, "DELETE FROM tbl_bbs_reply WHERE tbl_bbs_no=$bno");
+        if ($sql) {
+        ?> <script>
+                alert('글이 삭제되었습니다!');
+                location.href = '/bbs_list.php?page=<?= $pno ?>';
+            </script>
+        <? exit;
+        }else{
+            echo "쿼리 실패";
+            exit;
+        }
+    } else { //댓글 삭제
+        $sql = mysqli_query($db, "DELETE FROM tbl_bbs_reply WHERE reply_no=$reno");
+        if ($sql) {
+        ?> <script>
+                alert('댓글이 삭제되었습니다!');
+                location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
+            </script>
+        <? exit;
+        }
     }
 } //sign 
 else if ($action_flag === "S") {
@@ -205,7 +228,7 @@ else if ($action_flag === "S") {
                                 VALUES 
                                 ('" . $user_nm . "', '" . $user_id . "', '" . $user_pw . "', '" . $email . "', '" . $phone . "')");
     if ($sql) {
-    ?> <script>
+        ?> <script>
             alert('회원가입이 완료되었습니다!');
             location.href = '/index.php';
         </script>
@@ -213,9 +236,19 @@ else if ($action_flag === "S") {
     }
 } //reply 
 else if ($action_flag === "C") {
-    $sql = mysqli_query($db, "insert into tbl_bbs_reply ");
+    $sql = mysqli_query($db, "INSERT INTO tbl_bbs_reply 
+                                (tbl_bbs_no, reply_content, reply_id)
+                                VALUES 
+                                (" . $bno . ", '" . $reply_content . "', '" . $_SESSION['USER_ID'] . "')");
+    if ($sql) {
+    ?> <script>
+            alert('댓글이 등록되었습니다!');
+            location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
+        </script>
+    <? exit;
+    }
 }
-//R,M,D,S가 아닐경우
+//R,M,D,S,C가 아닐경우
 else {
     ?> <script>
         alert('잘못된 접근입니다!');
@@ -228,6 +261,7 @@ else {
 if (!$sql) {
 ?> <script>
         alert('DB쿼리 실행실패!');
+        <? exit; ?>
         history.back();
     </script>
 <?

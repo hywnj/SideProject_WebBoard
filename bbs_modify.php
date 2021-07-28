@@ -17,6 +17,8 @@ if (empty($_SESSION['USER_ID'])) {
         location.href='/bbs_list.php';</script>";
 }
 
+echo $_SESSION['USER_ID'];
+
 $bno = $_GET['no'];
 $pno = $_GET['page'];
 $sort = $_GET['sort'];
@@ -93,7 +95,7 @@ if ($_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
                     <tr>
                         <td><b>등록아이디</b></td>
                         <td>
-                            <input name="reg_id" id="ureg_id" value=<?= $_SESSION['USER_ID'] ?> readonly>
+                            <input name="user_id" id="user_id" value=<?= $_SESSION['USER_ID'] ?> readonly>
                         </td>
                         <td><b>이메일</b></td>
                         <td>
