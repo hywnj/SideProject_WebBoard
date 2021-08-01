@@ -1,6 +1,6 @@
 <?php
-include  "C:/sideProject/Board/common/db.php";
-include_once "C:/sideProject/Board/common/common.php";
+include  "C:/Project/SideProject_WebBoard/common/db.php";
+include_once "C:/Project/SideProject_WebBoard/common/common.php";
 ?>
 
 <!DOCTYPE html>

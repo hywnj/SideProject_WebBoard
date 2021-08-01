@@ -1,6 +1,6 @@
 <?php
-include_once "C:/sideProject/Board/common/db.php";
-include_once "C:/sideProject/Board/common/common.php";
+include_once "C:/Project/SideProject_WebBoard/common/db.php";
+include_once "C:/Project/SideProject_WebBoard/common/common.php";
 
 /* R(글 등록), M(수정), D(삭제), S(회원가입), C(댓글) 공통 check */
 //url 직접접근 방지
@@ -238,6 +238,11 @@ else if ($action_flag === "S") {
         ?> <script>
             alert('회원가입이 완료되었습니다!');
             location.href = '/index.php';
+        </script>
+    <? exit;
+    } else {
+    ?> <script>
+            alert('DB쿼리 실패!');
         </script>
     <? exit;
     }

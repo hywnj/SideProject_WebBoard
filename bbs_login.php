@@ -1,6 +1,6 @@
 <?php
-include_once "C:/sideProject/Board/common/db.php";
-include_once "C:/sideProject/Board/common/common.php";
+include_once "C:/Project/SideProject_WebBoard/common/db.php";
+include_once "C:/Project/SideProject_WebBoard/common/common.php";
 
 //변수
 $user_id = $_POST['user_id'];

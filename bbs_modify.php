@@ -1,6 +1,6 @@
 <?php
-include_once "C:/sideProject/Board/common/db.php";
-include_once "C:/sideProject/Board/common/common.php";
+include_once "C:/Project/SideProject_WebBoard/common/db.php";
+include_once "C:/Project/SideProject_WebBoard/common/common.php";
 
 //url 직접접근 방지
 if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
@@ -17,7 +17,6 @@ if (empty($_SESSION['USER_ID'])) {
         location.href='/bbs_list.php';</script>";
 }
 
-echo $_SESSION['USER_ID'];
 
 $bno = $_GET['no'];
 $pno = $_GET['page'];

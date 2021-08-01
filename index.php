@@ -1,5 +1,5 @@
 <?php
-include_once "C:/sideProject/Board/common/common.php";
+include_once "C:/Project/SideProject_WebBoard/common/common.php";
 
 //회원일경우 index page hide할 부분
 if (!empty($_SESSION['USER_ID'])) {
