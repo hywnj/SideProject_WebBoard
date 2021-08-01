@@ -68,30 +68,27 @@ if ($sort === "desc" || $sort === "asc" || $sort === "title") {
 }
 
 // 2) limit 추가 - 리스트에 표시할 것;
-/*$sql_list1 = mysqli_query($db, "SELECT no, title, reg_id, reg_date, email 
+/*$sql_list = mysqli_query($db, "SELECT no, title, reg_id, reg_date, email 
                                 FROM tbl_bbs WHERE(1=1) $sql_keyword $sql_myboard $sql_sort
                                 LIMIT $list_start, $list_cnt");*/
 
 //2) 리스트에 표시할 것 - 댓글 추가
-$sql_list = mysqli_query($db, "SELECT 
-                                    tb.no AS no,
-                                    tb.title AS title,
-                                    tb.reg_id AS reg_id,
-                                    tb.email AS email,
-                                    tb.reg_date AS reg_date
-                                    (
-                                    SELECT
-                                        count(*)
-                                    FROM
-                                        TBL_BBS_REPLY AS tbr
-                                    WHERE
-                                        tbr.TBL_BBS_NO = tb.no) cnt
-                                FROM
-                                    tbl_bbs AS tb
-                                LEFT OUTER JOIN TBL_BBS_REPLY AS tbr ON
-                                    tb.no = tbr.TBL_BBS_NO
-                                WHERE
-                                    (1 = 1) $sql_keyword $sql_myboard $sql_sort");
+$sql_list = mysqli_query($db, "SELECT
+                                tb.no AS no,
+                                tb.title AS title,
+                                tb.reg_id AS reg_id,
+                                tb.email AS email,
+                                tb.reg_date AS reg_date,
+                                count(tbr.tbl_bbs_no) AS reply_cnt
+                            FROM
+                                tbl_bbs AS tb
+                            left outer join tbl_bbs_reply AS tbr ON
+                                tb.no = tbr.tbl_bbs_no
+                            WHERE
+                                (1 = 1) $sql_keyword $sql_myboard 
+                                GROUP BY tb.no
+                                $sql_sort
+                                LIMIT $list_start, $list_cnt");
 
 
 //DB쿼리에서 불러온 값으로 초기화하는 변수 선언
@@ -107,7 +104,6 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
 ?>
 
 <!DOCTYPE html>
-
 <head>
     <meta charset="UTF-8">
     <title>게시판</title>
@@ -153,8 +149,8 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
         </a>
     </div>
     <div id="board_area">
-        <h1>자유게시판</h1>
-        <? if (!empty($catagory) && !empty($keyword) || !empty($myboard)) { ?>
+        <h1><a href="/bbs_list.php">자유게시판</a></h1>
+        <? if (!empty($catagory) && !empty($keyword) || $myboard === "true") { ?>
             <div id="reset_btn"><a href="/bbs_list.php"><button style="width: 80px; height: 30px;">처음으로</button></a></div>
         <? } ?>
         <div id="search_box">
@@ -194,15 +190,27 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                         <td><?= $tbl_bbs['no'] ?></td>
                         <td>
                             <a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no'] ?>&sort=<?= $sort ?>">
-                                <?= $tbl_bbs['title'] ?>[<?=$tbl_bbs['cnt']?>]
+                                <?= $tbl_bbs['title']; ?>
                             </a>
+                            <!-- 댓글 수 -->
+                            <?
+                            if (!empty($tbl_bbs['reply_cnt'])) { ?>
+                                <a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no'] ?>&sort=<?= $sort ?>#reply_view">
+                                    <span style="color:orangered; font-weight:bold">
+                                        &nbsp[<?= $tbl_bbs['reply_cnt'] ?>]
+                                    </span>
+                                </a>
+                            <?    }
+                            ?>
                         </td>
                         <td><?= $tbl_bbs['reg_id'] ?></td>
                         <td><?= date("Y-m-d", strtotime($tbl_bbs['reg_date'])) ?></td>
                         <td><?= $tbl_bbs['email'] ?></td>
                     </tr>
                 </tbody>
-            <? } ?>
+            <? } 
+                $db->close();
+            ?>
         </table>
         <div id="paging_area">
             <table>

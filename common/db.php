@@ -10,4 +10,3 @@
         echo "disconnect : fail<br>";
         error_log (date("Y-m-d H:i:s", time()) . " - mysqli_connect : fail\n", 3, "C:/Payple/APM/Apache24/htdocs/debug.log");
     }
-?>

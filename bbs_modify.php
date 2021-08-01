@@ -53,6 +53,7 @@ if ($_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
             var email = frmMod.email.value;
             var content = frmMod.content.value;
 
+
             //필수 입력값 - title check
             if (title == "") {
                 alert("제목을 입력해주세요!");
@@ -60,10 +61,10 @@ if ($_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
             }
 
             //변경사항 여부 check
-            if (title == "<?= $tbl_bbs['title'] ?>" && email == "<?= $tbl_bbs['email'] ?>" && content == "<?= $tbl_bbs['content'] ?>") {
+            /*if (title == "<?= $tbl_bbs['title'] ?>" && email == "<?= $tbl_bbs['email'] ?>" && (content == "<?=$tbl_bbs['content']?>")) {
                 alert("수정사항이 없습니다!");
                 return false;
-            }
+            }*/
 
             //email form check
             if (email.trim()) {
@@ -105,7 +106,7 @@ if ($_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
                 </tbody>
             </table>
             <div id="bo_content">
-                <textarea name="content" id="ucontent" rows="20" cols="124" placeholder="내용을 입력해주세요."><?= $tbl_bbs['content']; ?></textarea>
+                <textarea name="content" id="ucontent" rows="20" cols="124" placeholder="내용을 입력해주세요."><?= $tbl_bbs['content'] ?></textarea>
             </div>
         </form>
         <div id="bo_ser">

@@ -55,6 +55,14 @@ if (!empty($_SESSION['USER_ID'])) {
                 return false;
             }
         }
+
+        //Enter 클릭 시 로그인 Form 전송
+        function enterkey() {
+            if (window.event.keyCode == 13) {
+                userCheck();
+            }
+
+        }
     </script>
 </head>
 
@@ -64,7 +72,7 @@ if (!empty($_SESSION['USER_ID'])) {
         <div id="login_box">
             <!--로그인-->
             <h2 style="margin-left: 20px;">로그인</h2>
-            <form name="frmLogin" action="/bbs_login.php" method="post">
+            <form name="frmLogin" action="/bbs_login.php" method="post" onkeyup="enterkey();">
                 <h4 id="login_text">아이디</h4>
                 <input type="text" name="user_id" id="login_input" placeholder="아이디를 입력해주세요." maxlength="10" require>
                 <h4 id="login_text">비밀번호</h4>

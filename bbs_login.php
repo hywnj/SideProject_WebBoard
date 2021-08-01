@@ -48,7 +48,7 @@ if (!$tbl_user['user_id']) {
         $sql_pwcnt_reset = mysqli_query($db, "UPDATE tbl_user SET pw_cnt=0 WHERE user_id='" . $user_id . "'");
 
     ?> <script>
-            alert('환영합니다!<?$email?>dd<?$_SESSION['EMAIL']?>');
+            alert('환영합니다!');
             location.href = '/bbs_list.php';
         </script>
 

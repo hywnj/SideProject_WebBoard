@@ -7,8 +7,10 @@ include_once "C:/sideProject/Board/common/common.php";
 
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html;" />
     <title>게시판</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css" />
+
 </head>
 
 <body>
@@ -17,7 +19,15 @@ include_once "C:/sideProject/Board/common/common.php";
     $bno = $_GET['no'];
     $pno = (isset($_GET['page'])) ? $_GET['page'] : 1;
     $sort = $_GET['sort'];
-    $sql = mysqli_query($db, "SELECT * FROM tbl_bbs WHERE no=$bno");
+    $sql = mysqli_query($db, "SELECT 
+                                    no
+                                    , title
+                                    , content
+                                    , email
+                                    , reg_id
+                                    , reg_date
+                                    , mod_date
+                                FROM tbl_bbs WHERE no=$bno");
 
     if ($sql) {
         $tbl_bbs = mysqli_fetch_array($sql);
@@ -67,11 +77,12 @@ include_once "C:/sideProject/Board/common/common.php";
     $tbl_bbs_next = mysqli_fetch_assoc($sql_next);
 
     //댓글
-    $sql_reply = mysqli_query($db, "SELECT reply_no, tbl_bbs_no, reply_content, reply_id, reply_date FROM tbl_bbs_reply WHERE tbl_bbs_no=$bno");
+    $sql_reply = mysqli_query($db, "SELECT reply_no, tbl_bbs_no, reply_content, reply_id, reg_date, mod_date FROM tbl_bbs_reply WHERE tbl_bbs_no=$bno");
 
     ?>
     <!--게시글 삭제-->
-    <script>
+
+    <script type="text/javascript">
         function bbsDelCheck() {
             var bbsDelConfrim = confirm("정말 삭제하시겠습니까?");
             if (bbsDelConfrim) {
@@ -99,9 +110,9 @@ include_once "C:/sideProject/Board/common/common.php";
             if (replyDelConfrim) {
                 //Form 전송
                 document.write(
-                    '<form id="frmDel" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=' + reno + '" method="post"><input type="hidden" name="action_flag" value="D"></form>'
+                    '<form id="frmReDel" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=' + reno + '" method="post"><input type="hidden" name="action_flag" value="D"></form>'
                 );
-                document.getElementById("frmDel").submit();
+                document.getElementById("frmReDel").submit();
             } else {
                 return false;
             }
@@ -114,17 +125,16 @@ include_once "C:/sideProject/Board/common/common.php";
             document.getElementById("re_del_btn_" + reno).style.display = "none";
         }
 
-        function replyModiCheck(reno) {
-
+        /*function replyModiCheck(reno) {
             //Form 전송
             document.frmReMod.submit();
-
+            //$("#frmReMod").submit();
             // UI 변경
             document.getElementById("reply_content_modify_box_" + reno).style.display = "none";
             document.getElementById("reply_content_box_" + reno).style.display = "block";
             document.getElementById("re_modi_btn_" + reno).style.display = "block";
             document.getElementById("re_del_btn_" + reno).style.display = "block";
-        }
+        }*/
     </script>
 
     <!-- 글 불러오기 -->
@@ -139,36 +149,70 @@ include_once "C:/sideProject/Board/common/common.php";
                 <tr>
                     <td><b>등록아이디</b></td>
                     <td><?= $tbl_bbs['reg_id']; ?></td>
-                    <td><b>등록일자</b></td>
-                    <?php echo '<td>' . date("Y-m-d", strtotime($tbl_bbs['reg_date'])) . '</td>' ?>
+                    <td><b>등록일시</b></td>
+                    <td><?= $tbl_bbs['reg_date']; ?></td>
+                </tr>
+                <tr>
+                    <td><b>등록이메일</b></td>
+                    <td><?= $tbl_bbs['email']; ?></td>
+                    <td><b>수정일시</b></td>
+                    <td>
+                        <? if ($tbl_bbs['reg_date'] != $tbl_bbs['mod_date']) {
+                            echo $tbl_bbs['mod_date'];
+                        } else { ?>
+                            -
+                        <? } ?>
+                    </td>
                 </tr>
             </tbody>
         </table>
         <div id="bo_content">
-            <?php echo nl2br("$tbl_bbs[content]"); ?>
+            <?php echo nl2br($tbl_bbs['content']); ?>
         </div>
         <!--댓글 목록-->
-        <div class="reply_view">
+        <div class="reply_view" id="reply_view">
             <h3>댓글 목록</h3>
             <div class="dap_lo">
                 <? while ($tbl_bbs_reply = mysqli_fetch_assoc($sql_reply)) { ?>
                     <div class="dap_to">
-                        <p style="font-size: 15px;"><b><?= $tbl_bbs_reply['reply_id'] ?></b>
-                            <span style="font-size: 11px; margin-left:10px; color:gray;"><?= $tbl_bbs_reply['reply_date'] ?></span>
-                            <? if ($_SESSION['USER_ID'] === $tbl_bbs_reply['reply_id']) { ?>
-                                <button type="button" id="re_del_btn_<?= $tbl_bbs_reply['reply_no'] ?>" onClick="replyDelCheck(<?= $tbl_bbs_reply['reply_no'] ?>);" style="float: right; margin-left:10px;">삭제</button>
-                                <button type="button" id="re_modi_btn_<?= $tbl_bbs_reply['reply_no'] ?>" onClick="replyModiChange(<?= $tbl_bbs_reply['reply_no'] ?>);" style="float: right;">수정</button>
+                        <div style="font-size: 15px;"><b><?= $tbl_bbs_reply['reply_id'] ?></b>
+                            <span style="font-size: 11px; margin-left:10px; color:gray;"><?= $tbl_bbs_reply['reg_date'] ?></span>
+                            <? if ($tbl_bbs_reply['reg_date'] === $tbl_bbs_reply['mod_date']) { ?>
+                            <?  } else { ?>
+                                <span style="font-size: 11px; color: #09C"> | 수정 : <?= $tbl_bbs_reply['mod_date'] ?></span>
                             <? } ?>
-                        </p>
+                            <!--댓글 작성자에게만 수정, 삭제 버튼 노출 -->
+                            <? if ($_SESSION['USER_ID'] === $tbl_bbs_reply['reply_id']) { ?>
+                                <button type="button" id="re_del_btn_<?= $tbl_bbs_reply['reply_no'] ?>" onClick="replyDelCheck(<?= $tbl_bbs_reply['reply_no'] ?>);" style="float: right; margin-left:10px;">
+                                    삭제
+                                </button>
+                                <button type="button" id="re_modi_btn_<?= $tbl_bbs_reply['reply_no'] ?>" onClick="replyModiChange(<?= $tbl_bbs_reply['reply_no'] ?>);" style="float: right;">
+                                    수정
+                                </button>
+                            <? } ?>
+                        </div>
+                        <!--댓글 수정 이건 왜안될까 . 같은 페이지에서 댓글이 여러개일때 submit이 여러개인셈이되어서??
                         <div id="reply_content_modify_box_<?= $tbl_bbs_reply['reply_no'] ?>" style="display: none;">
                             <form name="frmReMod" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=<?= $tbl_bbs_reply['reply_no'] ?>" method="post">
                                 <input type="hidden" name="action_flag" value="M">
-                                <textarea name="reply_content" cols=155 ><?= nl2br($tbl_bbs_reply['reply_content']) ?></textarea>
-                                <button type="button" id="re_modi_save_btn" onClick="replyModiCheck(<?= $tbl_bbs_reply['reply_no'] ?>);" style="float: right; margin-left:10px;">저장</button>
+                                <textarea name="reply_content" cols=155><?= nl2br($tbl_bbs_reply['reply_content']) ?></textarea>
+                                <button type="button" id="re_modi_save_btn" onClick="replyModiCheck(<?= $tbl_bbs_reply['reply_no'] ?>);" style="float: right;">
+                                    저장
+                                </button>
+                            </form>
+                        </div>-->
+                        <!--댓글 수정-->
+                        <div id="reply_content_modify_box_<?= $tbl_bbs_reply['reply_no'] ?>" style="display: none;">
+                            <form name="frmReMod" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=<?= $tbl_bbs_reply['reply_no'] ?>" method="post">
+                                <input type="hidden" name="action_flag" value="M">
+                                <textarea name="reply_content" cols=155><?= nl2br($tbl_bbs_reply['reply_content']) ?></textarea>
+                                <button type="submit" id="re_modi_save_btn" style="float: right;">
+                                    저장
+                                </button>
                             </form>
                         </div>
-                        <div id="reply_content_box_<?= $tbl_bbs_reply['reply_no'] ?>" style="font-size: 13px;"><?= nl2br($tbl_bbs_reply['reply_content']) ?></div>
 
+                        <div id="reply_content_box_<?= $tbl_bbs_reply['reply_no'] ?>" style="font-size: 13px;"><?= nl2br($tbl_bbs_reply['reply_content']) ?></div>
                     </div>
                 <? } ?>
             </div>
@@ -185,18 +229,18 @@ include_once "C:/sideProject/Board/common/common.php";
         <!--이전글 다음글-->
         <div id="pri_next">
             <p><b>▲ 이전글</b>
-                    <? if (empty($tbl_bbs_pri['no'])) { ?>
-                        이전글이 없습니다.
-                    <? } else { ?>
-                        <u><a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_pri['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_pri['title'] ?></a></u>
-                    <? } ?>
+                <? if (empty($tbl_bbs_pri['no'])) { ?>
+                    이전글이 없습니다.
+                <? } else { ?>
+                    <u><a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_pri['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_pri['title'] ?></a></u>
+                <? } ?>
             </p>
             <p><b>▼ 다음글</b>
-                    <? if (empty($tbl_bbs_next['no'])) { ?>
-                        다음글이 없습니다.
-                    <? } else { ?>
-                        <u><a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_next['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_next['title'] ?></a></u>
-                    <? } ?>
+                <? if (empty($tbl_bbs_next['no'])) { ?>
+                    다음글이 없습니다.
+                <? } else { ?>
+                    <u><a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_next['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_next['title'] ?></a></u>
+                <? } ?>
             </p>
         </div>
         <!-- 목록, 수정, 삭제 -->

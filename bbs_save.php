@@ -19,11 +19,11 @@ $action_flag = $_POST['action_flag'];
 $bno = $_GET['no'];
 $pno = $_GET['page'];
 $sort = $_GET['sort'];
-//reg_id도 모두 SERVER에서 받아오는걸로 수정하기
-//$reg_id = trim($_POST['reg_id']);
 $reg_id = $_SESSION['USER_ID'];
 $title = trim($_POST['title']);
 $content = $_POST['content'];
+
+//회원정보
 $user_nm = trim($_POST['user_nm']);
 $user_id = trim($_POST['user_id']);
 $user_pw = hash('sha256', trim($_POST['user_pw']));
@@ -156,9 +156,9 @@ if ($action_flag === "S") {
 //register
 if ($action_flag === "R") {
     $sql = mysqli_query($db, "INSERT INTO tbl_bbs
-                                (title, content, reg_id, email, reg_date) 
+                                (title, content, reg_id, email) 
                                 VALUES
-                                ('" . $title . "','" . $content . "','" . $reg_id . "','" . $email . "','".date("Y-m-d H:i:s")."')");
+                                ('" . $title . "','" . $content . "','" . $reg_id . "','" . $email . "')");
 
     $sql_read = mysqli_query($db, "SELECT no FROM tbl_bbs 
                                     WHERE title='" . $title . "' AND content='" . $content . "' AND reg_id='" . $reg_id . "' AND email='" . $email . "' 
@@ -171,30 +171,37 @@ if ($action_flag === "R") {
             alert('저장을 성공했습니다!');
             location.href = '/bbs_content.php?page=1&no=<?= $tbl_bbs['no'] ?>';
         </script>
-    <? exit;
+        <? exit;
     }
 } //modify
 else if ($action_flag === "M") {
     if (empty($reno)) {
         $sql = mysqli_query($db, "UPDATE tbl_bbs 
-                                SET title='" . $title . "'
-                                , email='" . $email . "'
-                                , content='" . $content . "'
-                                , mod_date='".date("Y-m-d H:i:s")." 
-                                 WHERE no=$bno");
+                                    SET title='" . $title . "'
+                                    , email='" . $email . "'
+                                    , content='" . $content . "'
+                                    , mod_date='" . date("Y-m-d H:i:s") . "' 
+                                    WHERE no=$bno");
+        if ($sql) {
+        ?> <script>
+                alert('게시글 수정을 성공했습니다!');
+                location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
+            </script>
+        <? exit;
+        }
     } else {
         $sql = mysqli_query($db, "UPDATE tbl_bbs_reply 
-                                SET reply_content='" . $reply_content . "'
-                                 WHERE reply_no=" . $reno);
-    }
-    if ($sql) {
-    ?> <script>
-            alert('수정을 성공했습니다!');
-            location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
-        </script>
+                                    SET reply_content='" . $reply_content . "'
+                                    , mod_date='" . date("Y-m-d H:i:s") . "'
+                                     WHERE reply_no=$reno");
+        if ($sql) {
+        ?> <script>
+                alert('댓글 수정을 성공했습니다!');
+                history.back();
+                //location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
+            </script>
         <? exit;
-    }else{
-        echo "쿼리실패";
+        }
     }
 } //delete 
 else if ($action_flag === "D") {
@@ -207,7 +214,7 @@ else if ($action_flag === "D") {
                 location.href = '/bbs_list.php?page=<?= $pno ?>';
             </script>
         <? exit;
-        }else{
+        } else {
             echo "쿼리 실패";
             exit;
         }
@@ -216,7 +223,7 @@ else if ($action_flag === "D") {
         if ($sql) {
         ?> <script>
                 alert('댓글이 삭제되었습니다!');
-                location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
+                location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
             </script>
         <? exit;
         }
@@ -243,7 +250,7 @@ else if ($action_flag === "C") {
     if ($sql) {
     ?> <script>
             alert('댓글이 등록되었습니다!');
-            location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
+            location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
         </script>
     <? exit;
     }
