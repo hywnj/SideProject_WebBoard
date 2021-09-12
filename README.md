@@ -18,9 +18,10 @@ PHP 언어로 구현한 웹 게시판입니다.😉 <br>
 - 댓글 작성 / 수정 / 삭제
 <br>
 
+## 📁&nbsp;webBoard
+> **게시판 메인** &nbsp;:&nbsp; index.php <br>
 
 ## 📁&nbsp;bbs
-> **게시판 메인** &nbsp;:&nbsp; index.php <br>
 > **로그인** &nbsp;:&nbsp; bbs_login.php<br>
 > **로그아웃**&nbsp;:&nbsp; bbs_logout.php<br>
 > **회원가입** &nbsp;:&nbsp; bbs_sign.php<br>
