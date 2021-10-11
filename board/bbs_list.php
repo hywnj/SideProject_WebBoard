@@ -1,6 +1,5 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/db.php";
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 
 $user_id = $_SESSION['USER_ID'];
 
@@ -111,14 +110,14 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
     <script>
         function changeSort(option) {
             //정렬 option 선택시, 1번째 page로 세팅
-            location.replace("/bbs_list.php?page=1&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=" + option + "&myboard=<?= $myboard ?>");
+            location.replace("/board/bbs_list.php?page=1&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=" + option + "&myboard=<?= $myboard ?>");
         }
 
         function logoutCheck() {
             var outConfirm = confirm('로그아웃 하시겠습니까?');
 
             if (outConfirm) {
-                location.href = '/bbs_logout.php';
+                location.href = '/board/bbs_logout.php';
             } else {
                 return false;
             }
@@ -133,11 +132,11 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
         <button type="button" onClick="logoutCheck();" id="logout_btn" style="width: 80px; height:30px;">
             로그아웃
         </button>
-        <a href="/bbs_list.php?page=1&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=true">
+        <a href="/board/bbs_list.php?page=1&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=true">
             <button type="button" id="myboard_btn" style="width: 100px; height:30px;">내 게시물 보기</button>
         </a>
         <!--비회원-->
-        <a href="/bbs_sign.php">
+        <a href="/board/bbs_sign.php">
             <button type="button" id="sign_btn" style="width: 100px; height:30px;">
                 회원가입
             </button>
@@ -149,9 +148,9 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
         </a>
     </div>
     <div id="board_area">
-        <h1><a href="/bbs_list.php">자유게시판</a></h1>
+        <h1><a href="/board/bbs_list.php">자유게시판</a></h1>
         <? if (!empty($catagory) && !empty($keyword) || $myboard === "true") { ?>
-            <div id="reset_btn"><a href="/bbs_list.php"><button style="width: 80px; height: 30px;">처음으로</button></a></div>
+            <div id="reset_btn"><a href="/board/bbs_list.php"><button style="width: 80px; height: 30px;">처음으로</button></a></div>
         <? } ?>
         <div id="search_box">
             <form name="frmSrch" method="get">
@@ -189,13 +188,13 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                     <tr>
                         <td><?= $tbl_bbs['no'] ?></td>
                         <td>
-                            <a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no'] ?>&sort=<?= $sort ?>">
+                            <a href="/board/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no'] ?>&sort=<?= $sort ?>">
                                 <?= $tbl_bbs['title']; ?>
                             </a>
                             <!-- 댓글 수 -->
                             <?
                             if (!empty($tbl_bbs['reply_cnt'])) { ?>
-                                <a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no'] ?>&sort=<?= $sort ?>#reply_view">
+                                <a href="/board/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no'] ?>&sort=<?= $sort ?>#reply_view">
                                     <span style="color:orangered; font-weight:bold">
                                         &nbsp[<?= $tbl_bbs['reply_cnt'] ?>]
                                     </span>
@@ -218,7 +217,7 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                 //이전 - 시작 페이지 집합일때를 제외하고는 모두 표시
                 if ($page_start != 1) {
                 ?>
-                    <td><a href="/bbs_list.php?page=<?= $page_start - 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=<?= $myboard ?>">
+                    <td><a href="/board/bbs_list.php?page=<?= $page_start - 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=<?= $myboard ?>">
                             < 이전 </a>
                     </td>
                     <?
@@ -231,13 +230,13 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                     <?
                     } else { //현재 페이지 아닐때
                     ?>
-                        <td><a href="/bbs_list.php?page=<?= $i ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=<?= $myboard ?>">[<?= $i ?>]</a></td>
+                        <td><a href="/board/bbs_list.php?page=<?= $i ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=<?= $myboard ?>">[<?= $i ?>]</a></td>
 
                     <? }
                 }
                 //다음 - 맨 마지막 페이지 집합일때를 제외하고는 모두 표시
                 if ($total_page != $page_end) { ?>
-                    <td><a href="/bbs_list.php?page=<?= $page_end + 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=<?= $myboard ?>">다음 ></a></td>
+                    <td><a href="/board/bbs_list.php?page=<?= $page_end + 1 ?>&catagory=<?= $catagory ?>&keyword=<?= $keyword ?>&sort=<?= $sort ?>&myboard=<?= $myboard ?>">다음 ></a></td>
                 <?
                 }
                 ?>
@@ -245,7 +244,7 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
             </table>
         </div>
         <div id="write_btn">
-            <a href="/bbs_regist.php"><button id="reg_btn" style="width: 80px; height: 30px; background-color:#09C; color:white;">등록하기</button></a>
+            <a href="/board/bbs_regist.php"><button id="reg_btn" style="width: 80px; height: 30px; background-color:#09C; color:white;">등록하기</button></a>
         </div>
     </div>
 </body>

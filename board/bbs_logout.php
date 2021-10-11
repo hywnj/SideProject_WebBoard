@@ -1,5 +1,5 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 
 //세션을 여러개를 쓸 수 도 있으니 변수를 초기화
 $_SESSION['USER_ID'] = "";

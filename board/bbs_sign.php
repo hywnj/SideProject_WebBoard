@@ -1,6 +1,6 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/db.php";
-include_once "C:/Project/SideProject_WebBoard/common/common.php"; ?>
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php'; ?>
 
 <!DOCTYPE html>
 
@@ -128,7 +128,7 @@ include_once "C:/Project/SideProject_WebBoard/common/common.php"; ?>
 <body>
     <div id="sign_area">
         <h1>회원가입</h1>
-        <form name="frmSign" action="/bbs_save.php" method="post">
+        <form name="frmSign" action="/board/bbs_save.php" method="post">
             <input type="hidden" name="action_flag" value="S">
             <p>
             <h3>이름<span style="color: red;"> *</span></h3>

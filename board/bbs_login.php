@@ -1,6 +1,6 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/db.php";
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 
 //변수
 $user_id = $_POST['user_id'];
@@ -49,7 +49,7 @@ if (!$tbl_user['user_id']) {
 
     ?> <script>
             alert('환영합니다!');
-            location.href = '/bbs_list.php';
+            location.href = '/board/bbs_list.php';
         </script>
 
     <? exit;

@@ -1,6 +1,6 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/db.php";
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 
 //url 직접접근 방지
 if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
@@ -14,7 +14,7 @@ if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
 if (empty($_SESSION['USER_ID'])) {
     echo "<script>
         alert('접근권한이 없습니다!');
-        location.href='/bbs_list.php';</script>";
+        location.href='/board/bbs_list.php';</script>";
 }
 
 
@@ -82,7 +82,7 @@ if ($_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
 <body>
     <div id="board_read">
         <h1>게시글 수정하기</h1>
-        <form action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno; ?>&sort=<?= $sort; ?>" name="frmMod" method="post">
+        <form action="/board/bbs_save.php?page=<?= $pno ?>&no=<?= $bno; ?>&sort=<?= $sort; ?>" name="frmMod" method="post">
             <input type="hidden" name="action_flag" value="M">
             <table class="list-table-content">
                 <thead>
@@ -109,7 +109,7 @@ if ($_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
             </div>
         </form>
         <div id="bo_ser">
-            <a href="/bbs_list.php"><button style="width: 50px; height: 30px;">목록</button></a>
+            <a href="/board/bbs_list.php"><button style="width: 50px; height: 30px;">목록</button></a>
             <button type="button" onClick="fnCheck();" style="width: 80px; height: 30px; background:wheat; cursor:pointer;">저장</button>
         </div>
     </div>

@@ -1,5 +1,5 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 
 //회원일경우 index page hide할 부분
 if (!empty($_SESSION['USER_ID'])) {
@@ -50,7 +50,7 @@ if (!empty($_SESSION['USER_ID'])) {
             var outConfirm = confirm('로그아웃 하시겠습니까?');
 
             if (outConfirm) {
-                location.href = '/bbs_logout.php';
+                location.href = '/board/bbs_logout.php';
             } else {
                 return false;
             }
@@ -72,7 +72,7 @@ if (!empty($_SESSION['USER_ID'])) {
         <div id="login_box">
             <!--로그인-->
             <h2 style="margin-left: 20px;">로그인</h2>
-            <form name="frmLogin" action="/bbs_login.php" method="post" onkeyup="enterkey();">
+            <form name="frmLogin" action="/board/bbs_login.php" method="post" onkeyup="enterkey();">
                 <h4 id="login_text">아이디</h4>
                 <input type="text" name="user_id" id="login_input" placeholder="아이디를 입력해주세요." maxlength="10" require>
                 <h4 id="login_text">비밀번호</h4>
@@ -83,13 +83,13 @@ if (!empty($_SESSION['USER_ID'])) {
         <!--회원가입-->
         <div id=sign_area>
             <h4 style="margin-top: 50px;">회원이 아니시라면, 회원가입을 먼저 해주세요!</h4>
-            <a href="/bbs_sign.php">
+            <a href="/board/bbs_sign.php">
                 <h4 style="color: blue; margin-top:-5px"><u>회원가입하기↗</u></h4>
             </a>
         </div>
         <!--게시글 리스트 바로가기-->
         <p id="non_member_coment" style="color:gray; margin-top:30px">비회원으로는 게시글 보기만 가능해요!</p>
-        <a href="/bbs_list.php"><button id="list_btn"><b>자유게시판 바로가기</b></button></a>
+        <a href="/board/bbs_list.php"><button id="list_btn"><b>자유게시판 바로가기</b></button></a>
     </div>
 </body>
 

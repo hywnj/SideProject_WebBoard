@@ -1,6 +1,6 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/db.php";
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 
 /* R(글 등록), M(수정), D(삭제), S(회원가입), C(댓글) 공통 check */
 //url 직접접근 방지
@@ -45,7 +45,7 @@ if (($action_flag == "R" || $action_flag == "M") && empty($reno)) {
     if (empty($_SESSION['USER_ID'])) {
     ?> <script>
             alert('접근권한이 없습니다! 로그인 후 이용해주세요!');
-            location.href = '/bbs_list.php';
+            location.href = '/board/bbs_list.php';
         </script>
     <?  }
 
@@ -169,7 +169,7 @@ if ($action_flag === "R") {
     if ($sql) {
         ?> <script>
             alert('저장을 성공했습니다!');
-            location.href = '/bbs_content.php?page=1&no=<?= $tbl_bbs['no'] ?>';
+            location.href = '/board/bbs_content.php?page=1&no=<?= $tbl_bbs['no'] ?>';
         </script>
         <? exit;
     }
@@ -185,7 +185,7 @@ else if ($action_flag === "M") {
         if ($sql) {
         ?> <script>
                 alert('게시글 수정을 성공했습니다!');
-                location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
+                location.href = '/board/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>';
             </script>
         <? exit;
         }
@@ -198,7 +198,7 @@ else if ($action_flag === "M") {
         ?> <script>
                 alert('댓글 수정을 성공했습니다!');
                 history.back();
-                //location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
+                //location.href = '/board/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
             </script>
         <? exit;
         }
@@ -211,7 +211,7 @@ else if ($action_flag === "D") {
         if ($sql) {
         ?> <script>
                 alert('글이 삭제되었습니다!');
-                location.href = '/bbs_list.php?page=<?= $pno ?>';
+                location.href = '/board/bbs_list.php?page=<?= $pno ?>';
             </script>
         <? exit;
         } else {
@@ -223,7 +223,7 @@ else if ($action_flag === "D") {
         if ($sql) {
         ?> <script>
                 alert('댓글이 삭제되었습니다!');
-                location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
+                location.href = '/board/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
             </script>
         <? exit;
         }
@@ -255,7 +255,7 @@ else if ($action_flag === "C") {
     if ($sql) {
     ?> <script>
             alert('댓글이 등록되었습니다!');
-            location.href = '/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
+            location.href = '/board/bbs_content.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>#reply_view';
         </script>
     <? exit;
     }

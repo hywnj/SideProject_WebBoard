@@ -1,6 +1,6 @@
 <?php
-include_once "C:/Project/SideProject_WebBoard/common/db.php";
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 echo $_SESSION['USER_ID'];
 echo $_SESSION['EMAIL'];
 
@@ -17,7 +17,7 @@ if (!preg_match("/" . $_SERVER['HTTP_HOST'] . "/i", $_SERVER['HTTP_REFERER'])) {
 if (empty($_SESSION['USER_ID'])) {
     echo "<script>
             alert('접근권한이 없습니다! 로그인을 해주세요!');
-            location.href='/bbs_list.php';
+            location.href='/board/bbs_list.php';
         </script>";
 }
 ?>
@@ -66,7 +66,7 @@ if (empty($_SESSION['USER_ID'])) {
                 }
             }
             //목록으로 이동
-            location.href = '/bbs_list.php';
+            location.href = '/board/bbs_list.php';
         }
     </script>
 
@@ -75,7 +75,7 @@ if (empty($_SESSION['USER_ID'])) {
 <body>
     <div id="board_read">
         <h1>게시글 등록하기</h1>
-        <form action="/bbs_save.php" name="frmReg" method="post">
+        <form action="/board/bbs_save.php" name="frmReg" method="post">
             <input type="hidden" name="action_flag" value="R">
             <table class="list-table-content">
                 <thead>

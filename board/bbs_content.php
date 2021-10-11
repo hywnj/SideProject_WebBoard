@@ -1,6 +1,6 @@
 <?php
-include  "C:/Project/SideProject_WebBoard/common/db.php";
-include_once "C:/Project/SideProject_WebBoard/common/common.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
+
 ?>
 
 <!DOCTYPE html>
@@ -88,7 +88,7 @@ include_once "C:/Project/SideProject_WebBoard/common/common.php";
             if (bbsDelConfrim) {
                 //Form 전송
                 document.write(
-                    '<form id="frmDel" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>" method="post"><input type="hidden" name="action_flag" value="D"></form>'
+                    '<form id="frmDel" action="/board/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>" method="post"><input type="hidden" name="action_flag" value="D"></form>'
                 );
                 document.getElementById("frmDel").submit();
             } else {
@@ -110,7 +110,7 @@ include_once "C:/Project/SideProject_WebBoard/common/common.php";
             if (replyDelConfrim) {
                 //Form 전송
                 document.write(
-                    '<form id="frmReDel" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=' + reno + '" method="post"><input type="hidden" name="action_flag" value="D"></form>'
+                    '<form id="frmReDel" action="/board/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=' + reno + '" method="post"><input type="hidden" name="action_flag" value="D"></form>'
                 );
                 document.getElementById("frmReDel").submit();
             } else {
@@ -193,7 +193,7 @@ include_once "C:/Project/SideProject_WebBoard/common/common.php";
                         </div>
                         <!--댓글 수정 이건 왜안될까 . 같은 페이지에서 댓글이 여러개일때 submit이 여러개인셈이되어서??
                         <div id="reply_content_modify_box_<?= $tbl_bbs_reply['reply_no'] ?>" style="display: none;">
-                            <form name="frmReMod" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=<?= $tbl_bbs_reply['reply_no'] ?>" method="post">
+                            <form name="frmReMod" action="/board/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=<?= $tbl_bbs_reply['reply_no'] ?>" method="post">
                                 <input type="hidden" name="action_flag" value="M">
                                 <textarea name="reply_content" cols=155><?= nl2br($tbl_bbs_reply['reply_content']) ?></textarea>
                                 <button type="button" id="re_modi_save_btn" onClick="replyModiCheck(<?= $tbl_bbs_reply['reply_no'] ?>);" style="float: right;">
@@ -203,7 +203,7 @@ include_once "C:/Project/SideProject_WebBoard/common/common.php";
                         </div>-->
                         <!--댓글 수정-->
                         <div id="reply_content_modify_box_<?= $tbl_bbs_reply['reply_no'] ?>" style="display: none;">
-                            <form name="frmReMod" action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=<?= $tbl_bbs_reply['reply_no'] ?>" method="post">
+                            <form name="frmReMod" action="/board/bbs_save.php?page=<?= $pno ?>&no=<?= $bno ?>&sort=<?= $sort ?>&reno=<?= $tbl_bbs_reply['reply_no'] ?>" method="post">
                                 <input type="hidden" name="action_flag" value="M">
                                 <textarea name="reply_content" cols=155><?= nl2br($tbl_bbs_reply['reply_content']) ?></textarea>
                                 <button type="submit" id="re_modi_save_btn" style="float: right;">
@@ -219,7 +219,7 @@ include_once "C:/Project/SideProject_WebBoard/common/common.php";
             <!--댓글 작성-->
             <div class="dap_ins" id="dap_ins">
                 <h3 style="color: rgb(0, 153, 204);">댓글 작성</h3>
-                <form action="/bbs_save.php?page=<?= $pno ?>&no=<?= $bno; ?>&sort=<?= $sort; ?>" name="frmReply" method="post">
+                <form action="/board/bbs_save.php?page=<?= $pno ?>&no=<?= $bno; ?>&sort=<?= $sort; ?>" name="frmReply" method="post">
                     <input type="hidden" name="action_flag" value="C">
                     <textarea name="reply_content" id="reply_content_textarea" placeholder="댓글을 입력해주세요."></textarea>
                 </form>
@@ -232,21 +232,21 @@ include_once "C:/Project/SideProject_WebBoard/common/common.php";
                 <? if (empty($tbl_bbs_pri['no'])) { ?>
                     이전글이 없습니다.
                 <? } else { ?>
-                    <u><a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_pri['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_pri['title'] ?></a></u>
+                    <u><a href="/board/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_pri['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_pri['title'] ?></a></u>
                 <? } ?>
             </p>
             <p><b>▼ 다음글</b>
                 <? if (empty($tbl_bbs_next['no'])) { ?>
                     다음글이 없습니다.
                 <? } else { ?>
-                    <u><a href="/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_next['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_next['title'] ?></a></u>
+                    <u><a href="/board/bbs_content.php?page=<?= $pno ?>&no=<?= $tbl_bbs_next['no'] ?>&sort=<?= $sort ?>"><?= $tbl_bbs_next['title'] ?></a></u>
                 <? } ?>
             </p>
         </div>
         <!-- 목록, 수정, 삭제 -->
         <div id="bo_ser">
-            <a href="/bbs_list.php?page=<?= $pno ?>&sort=<?= $sort ?>"><button style="width: 50px; height: 30px;">목록</button></a>
-            <a href="/bbs_modify.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no']; ?>&sort=<?= $sort; ?>"><button id="board_mod_btn" style="width: 50px; height: 30px">수정</button></a>
+            <a href="/board/bbs_list.php?page=<?= $pno ?>&sort=<?= $sort ?>"><button style="width: 50px; height: 30px;">목록</button></a>
+            <a href="/board/bbs_modify.php?page=<?= $pno ?>&no=<?= $tbl_bbs['no']; ?>&sort=<?= $sort; ?>"><button id="board_mod_btn" style="width: 50px; height: 30px">수정</button></a>
             <button type="button" onClick="bbsDelCheck();" id="board_del_btn" style="width: 50px; height: 30px; background:tomato;">삭제</button>
         </div>
     </div>
