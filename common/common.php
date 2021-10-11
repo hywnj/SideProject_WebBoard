@@ -13,3 +13,4 @@ header("Content-type: text/html; charset=utf-8");
 
 // Include File
 include_once $_SERVER['DOCUMENT_ROOT'] . '/common/db.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/common/function.php';

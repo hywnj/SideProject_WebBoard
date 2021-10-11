@@ -46,7 +46,7 @@ ul li {
 #login_input{
 	width: 450px; 
 	height: 30px;
-	margin-top: -50px;
+	margin-top: 5px;
 	margin-left: 20px;
 }
 #login_btn{
