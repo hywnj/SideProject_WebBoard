@@ -21,7 +21,7 @@ if (!$tbl_user['user_id']) {
     <?
 } else {
     //회원정보 불일치
-    if ( $user_pw !== $tbl_user['user_pw']) {
+    if ($user_pw !== $tbl_user['user_pw']) {
         ++$pw_cnt;
         //비밀번호 불일치 횟수 update
         $sql_pwcnt = mysqli_query($db, "UPDATE tbl_user SET pw_cnt=" . $pw_cnt . " WHERE user_id='" . $user_id . "'");
@@ -42,7 +42,7 @@ if (!$tbl_user['user_id']) {
         $_SESSION['USER_ID'] = $user_id;
         $_SESSION['USER_PW'] = $user_pw;
         $_SESSION['EMAIL'] = $email;
-        
+
 
         //비밀번호 불일치 횟수 초기화
         $sql_pwcnt_reset = mysqli_query($db, "UPDATE tbl_user SET pw_cnt=0 WHERE user_id='" . $user_id . "'");
@@ -52,6 +52,6 @@ if (!$tbl_user['user_id']) {
             location.href = '/board/bbs_list.php';
         </script>
 
-    <? exit;
+<? exit;
     }
 }

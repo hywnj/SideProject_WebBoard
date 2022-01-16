@@ -1,4 +1,5 @@
 <?php
+// index.php : 게시판 메인 페이지
 include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php';
 
 //회원일경우 index page hide할 부분

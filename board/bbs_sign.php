@@ -1,5 +1,5 @@
 <?php
-
+// bbs_sign.php : 회원가입 페이지
 include_once $_SERVER['DOCUMENT_ROOT'] . '/common/common.php'; ?>
 
 <!DOCTYPE html>

@@ -1,4 +1,6 @@
 <?php
+// common.php : 모든 파일에서 공통으로 사용하는 기능을 포함하는 파일
+
 session_start();
 
 // Header Setting

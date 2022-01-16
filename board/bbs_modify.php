@@ -60,7 +60,7 @@ if ($_SESSION['USER_ID'] != $tbl_bbs['reg_id']) {
             }
 
             //변경사항 여부 check
-            /*if (title == "<?= $tbl_bbs['title'] ?>" && email == "<?= $tbl_bbs['email'] ?>" && (content == "<?=$tbl_bbs['content']?>")) {
+            /*if (title == "<?= $tbl_bbs['title'] ?>" && email == "<?= $tbl_bbs['email'] ?>" && (content == "<?= $tbl_bbs['content'] ?>")) {
                 alert("수정사항이 없습니다!");
                 return false;
             }*/

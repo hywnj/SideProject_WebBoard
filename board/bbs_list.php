@@ -103,6 +103,7 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
 ?>
 
 <!DOCTYPE html>
+
 <head>
     <meta charset="UTF-8">
     <title>게시판</title>
@@ -207,8 +208,8 @@ if ($total_page < $page_end) { //총 페이지 수보다 페이지 끝 번호가
                         <td><?= $tbl_bbs['email'] ?></td>
                     </tr>
                 </tbody>
-            <? } 
-                $db->close();
+            <? }
+            $db->close();
             ?>
         </table>
         <div id="paging_area">
